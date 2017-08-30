@@ -1,0 +1,61 @@
+def notifyObj
+node {
+    env.WORKSPACE=pwd()
+    env.DISPLAY=":1"
+    env.OSSIM_MAVEN_PROXY="https://artifactory.ossim.io/artifactory/ossim-deps"
+    env.CUCUMBER_CONFIG_LOCATION="${env.WORKSPACE}/omar-backend-tests/conf/cucumber-config-release.groovy"
+    try{
+        stage("Checkout"){
+           dir("ossim-ci"){
+              git branch: "${OSSIM_GIT_BRANCH}", url: 'https://github.com/ossimlabs/ossim-ci.git'
+           }
+            dir("omar-backend-tests"){
+              git branch: "${OSSIM_GIT_BRANCH}", url: 'https://github.com/ossimlabs/omar-backend-tests.git'
+            }
+           notifyObj = load "${env.WORKSPACE}/ossim-ci/jenkins/pipeline/notify.groovy"
+        }
+        stage("Run Test"){
+            dir("${env.WORKSPACE}/omar-backend-tests"){
+               sh """
+                ./gradlew backend
+                echo ""
+               """
+            }
+        }
+        stage("Publish Report"){
+            step([$class: 'CucumberReportPublisher',
+                fileExcludePattern: '',
+                fileIncludePattern: '',
+                ignoreFailedTests: false,
+                jenkinsBasePath: '',
+                jsonReportDirectory: "${env.WORKSPACE}/omar-backend-tests/build",
+                parallelTesting: false,
+                pendingFails: false,
+                skippedFails: false,
+                undefinedFails: false])
+           cucumberSlackSend channel: '#ossimlabs_jenkins', json: "${env.WORKSPACE}/omar-backend-tests/build/backend.json"
+        }
+      stage("Clean Workspace"){
+        step([$class: 'WsCleanup'])
+      }
+  }
+  catch(e)
+  {
+        stage("Publish Report"){
+            step([$class: 'CucumberReportPublisher',
+                fileExcludePattern: '',
+                fileIncludePattern: '',
+                ignoreFailedTests: false,
+                jenkinsBasePath: '',
+                jsonReportDirectory: "${env.WORKSPACE}/omar-backend-tests/build",
+                parallelTesting: false,
+                pendingFails: false,
+                skippedFails: false,
+                undefinedFails: false])
+           cucumberSlackSend channel: '#ossimlabs_jenkins', json: "${env.WORKSPACE}/omar-backend-tests/build/backend.json"
+        }
+    currentBuild.result = "FAILED"
+    notifyObj?.notifyFailed()
+    throw e
+  }
+}
