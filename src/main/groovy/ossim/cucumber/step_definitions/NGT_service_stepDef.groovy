@@ -32,7 +32,7 @@ Given(~/^that the NGT service is running$/) { ->
 /** WHENS */
 
 // NGT-01
-When(~/^a call is made to the (.*) with the (.*)$/) { String serviceName, String parameters ->
+When(~/^a call is made to the (.*) with the (.*) to the NGT service$/) { String serviceName, String parameters ->
     def httpStatus = null
 
     // Just ping the site to start the request
@@ -48,7 +48,7 @@ When(~/^a call is made to the (.*) with the (.*)$/) { String serviceName, String
 /** THENS */
 
 // NGT-01
-Then(~/^(.*) call should appear in the NGT-service log table with (.*)$/) { String serviceName, String parameters ->
+Then(~/^(.*) call should appear in the NGT-service log table with (.*) to the NGT service$/) { String serviceName, String parameters ->
 	URL ngtLog = new URL("${ngtService}/index")
 
 	ngtServiceResponse = ngtLog.getText()
