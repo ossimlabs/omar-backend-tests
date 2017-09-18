@@ -1,29 +1,24 @@
 rbtcloudRootDir = "https://omar-rel.ossim.io"
-sqsStagingQueue = "https://sqs.us-east-1.amazonaws.com/320588532383/avro-release"
 s3Bucket = "o2-test-data/Standard_test_imagery_set"
 s3BucketUrl = "https://s3.amazonaws.com"
-s3WmsVerificationFiles = "WMS_verification_images"
 s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
 
-downloadService = "${rbtcloudRootDir}/omar-download"
-icpServerProperty = "${rbtcloudRootDir}/omar-wms/imageSpace"
-//ingestBucket = "o2-test-data/Ingest_Staging_Folder"
-stagingService = "${rbtcloudRootDir}/omar-stager/dataManager"
-tlvUrl = "${rbtcloudRootDir}/tlv"
 wfsServerProperty = "${rbtcloudRootDir}/omar-wfs/wfs"
 wmsServerProperty = "${rbtcloudRootDir}/omar-wms/wms"
 wcsServerProperty = "${rbtcloudRootDir}/omar-wcs/wcs"
 wmtsServerProperty = "${rbtcloudRootDir}/omar-wmts/wmts"
 geoscriptService = "${rbtcloudRootDir}/omar-geoscript/geoscriptApi"
 imageSpaceServerProperty = "${rbtcloudRootDir}/omar-oms/imageSpace"
+ngtService = "${rbtcloudRootDir}/ngt-service/ngt"
 
 mensaUrl = "${rbtcloudRootDir}/omar-mensa"
 wfsUrl = "${rbtcloudRootDir}/omar-wfs"
 wmsUrl = "${rbtcloudRootDir}/omar-wms"
+wmtsUrl = "${rbtcloudRootDir}/omar-wmts"
+
 // minutes to wait
 waitForStage = 5
-wmtsUrl = "${rbtcloudRootDir}/omar-wmts"
 
 images = [
     geoeye: [

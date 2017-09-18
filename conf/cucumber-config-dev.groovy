@@ -5,10 +5,12 @@ s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
 
 wfsServerProperty = "${rbtcloudRootDir}/omar-wfs/wfs"
+wmsServerProperty = "${rbtcloudRootDir}/omar-wms/wms"
 wcsServerProperty = "${rbtcloudRootDir}/omar-wcs/wcs"
 wmtsServerProperty = "${rbtcloudRootDir}/omar-wmts/wmts"
 geoscriptService = "${rbtcloudRootDir}/omar-geoscript/geoscriptApi"
 imageSpaceServerProperty = "${rbtcloudRootDir}/omar-oms/imageSpace"
+ngtService = "${rbtcloudRootDir}/ngt-service/ngt"
 
 mensaUrl = "${rbtcloudRootDir}/omar-mensa"
 wfsUrl = "${rbtcloudRootDir}/omar-wfs"
@@ -17,6 +19,7 @@ wmtsUrl = "${rbtcloudRootDir}/omar-wmts"
 
 // minutes to wait
 waitForStage = 5
+
 images = [
     geoeye: [
         msi: [
