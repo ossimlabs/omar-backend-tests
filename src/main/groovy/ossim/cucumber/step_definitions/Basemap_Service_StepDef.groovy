@@ -40,12 +40,15 @@ When(~/^a call is made to a basemap (.*)$/) { String imageNum ->
     println "testing ${verificationImageUrl}"
     verificationImage = File.createTempFile("tempImage", ".jpeg")
     FileUtils.copyURLToFile(verificationImageUrl, verificationImage)
+    println "file size: ${FileUtils.sizeOf(verificationImage)}"
     verificationImage.deleteOnExit()
 
     def testImageUrl = new URL(RequestURLFile.readLines().get(Integer.parseInt(imageNum) - 1))
     println "testing ${testImageUrl}"
     test1 = File.createTempFile("tempTestImage1", ".jpeg")
     FileUtils.copyURLToFile(testImageUrl, test1)
+    println "file size: ${FileUtils.sizeOf(test1)}"
+    println "files equal: ${FileUtils.contentEquals(test1, verificationImage)}"
     test1.deleteOnExit()
 
 }
