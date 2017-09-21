@@ -12,6 +12,7 @@ config = CucumberConfig.config
 def s3Bucket = config.s3Bucket
 def s3BucketUrl = config.s3BucketUrl
 def s3BasemapVerificationFiles = config.s3BasemapVerificationFiles
+def s3BasemapUrlList = config.s3BasemapUrlList
 
 // The Urls for the request of all images in the test set
 def wmsProxyUrls
@@ -31,7 +32,7 @@ File verificationImage
 // Scenario [O2BM-01]
 When(~/^a call is made to a basemap (.*)$/) { String imageNum ->
 
-    wmsProxyUrls = new URL("${s3BucketUrl}/${s3Bucket}/${s3BasemapVerificationFiles}/Basemaptest.txt")
+    wmsProxyUrls = new URL("${s3BucketUrl}/${s3Bucket}/${s3BasemapVerificationFiles}/${s3BasemapUrlList}")
     RequestURLFile = File.createTempFile("Request", ".txt")
     FileUtils.copyURLToFile(wmsProxyUrls, RequestURLFile)
     RequestURLFile.deleteOnExit()

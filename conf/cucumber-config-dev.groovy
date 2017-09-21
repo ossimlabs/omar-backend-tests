@@ -3,6 +3,7 @@ s3Bucket = "o2-test-data/Standard_test_imagery_set"
 s3BucketUrl = "https://s3.amazonaws.com"
 s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
+s3BasemapUrlList = "Basemaptest-dev.txt"
 
 wfsServerProperty = "${rbtcloudRootDir}/omar-wfs/wfs"
 wmsServerProperty = "${rbtcloudRootDir}/omar-wms/wms"
