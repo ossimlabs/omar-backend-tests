@@ -111,17 +111,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter
-
-//        if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
-//        {
-//            filter = "title LIKE 'SIDD: ${imageId}'"
-//        }
-//        else
-//        {
-            filter = "title LIKE '%${imageId}%'"
-//        }
-
+        def filter = "title LIKE '%${imageId}%'"
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
         HashMap layerHashMap = wmtsLayers[0] as HashMap
