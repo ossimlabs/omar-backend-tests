@@ -113,14 +113,14 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         def filter
 
-        if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
-        {
-            filter = "title LIKE 'SIDD: ${imageId}'"
-        }
-        else
-        {
-            filter = "title LIKE '${imageId}'"
-        }
+//        if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
+//        {
+//            filter = "title LIKE 'SIDD: ${imageId}'"
+//        }
+//        else
+//        {
+            filter = "title LIKE '%${imageId}%'"
+//        }
 
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
@@ -142,12 +142,13 @@ Then(~/^the WMTS service responds with a correct GetCapabilities statement$/) { 
 Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String imageType ->
 
     def verificationImageUrl = new URL("${s3BucketUrl}/${s3Bucket}/${wmtsValidationTile}.${imageType}")
+    println "Verification Image: ${verificationImageUrl}"
     File validFile = File.createTempFile("tempImageWMTS2", ".${imageType}")
     FileUtils.copyURLToFile(verificationImageUrl, validFile)
 
-    wmtsReturnImage.deleteOnExit()
-    validFile.deleteOnExit()
-
+    //wmtsReturnImage.deleteOnExit()
+    //validFile.deleteOnExit()
+    
     def fileComp = new FileCompare()
     assert fileComp.checkImages(validFile, wmtsReturnImage)
 }
