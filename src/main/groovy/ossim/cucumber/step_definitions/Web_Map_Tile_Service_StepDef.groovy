@@ -18,7 +18,7 @@ File wmtsReturnImage
 def wmtsLayers
 def wmtsGetCapabilitiesReturn
 def wmtsTiles
-def wmtsValidationTile = "WMS_verification_images/wmtsValidationImage_WorldGeographic_05FEB09OV05010005V090205M0001912264B220000100072M_001508507"
+def wmtsValidationTile = "WMTS_verification_images/wmtsValidationImage_WorldGeographic_14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG"
 def error = false
 
 config = CucumberConfig.config
