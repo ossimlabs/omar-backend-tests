@@ -145,8 +145,8 @@ Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String im
     File validFile = File.createTempFile("tempImageWMTS2", ".${imageType}")
     FileUtils.copyURLToFile(verificationImageUrl, validFile)
 
-    wmtsReturnImage.deleteOnExit()
-    validFile.deleteOnExit()
+    //wmtsReturnImage.deleteOnExit()
+    //validFile.deleteOnExit()
 
     def fileComp = new FileCompare()
     assert fileComp.checkImages(validFile, wmtsReturnImage)
