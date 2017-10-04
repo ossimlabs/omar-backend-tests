@@ -148,7 +148,7 @@ Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String im
 
     //wmtsReturnImage.deleteOnExit()
     //validFile.deleteOnExit()
-
+    
     def fileComp = new FileCompare()
     assert fileComp.checkImages(validFile, wmtsReturnImage)
 }
