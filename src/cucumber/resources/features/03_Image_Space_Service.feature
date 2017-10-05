@@ -19,7 +19,6 @@ Feature: ImageSpaceService
     Examples:
     | thumbnailType | platform  | sensor | format  | timeLimitInMillis |
     | png           | QuickBird | MSI    | GeoTIFF | 1000              |
-    | png           | QuickBird | MSI    | GeoTIFF | 0001              |
 
   Scenario: [IMG-04] call ImageSpace to view an overview tile of an commercial msi image in red green blue band order
 #    Given a WorldView2 MSI GeoTIFF image has been staged

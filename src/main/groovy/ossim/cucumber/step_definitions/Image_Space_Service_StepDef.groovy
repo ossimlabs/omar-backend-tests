@@ -30,6 +30,13 @@ def getImageId(format, index, platform, sensor)
     return config.images[platform][sensor][format][index == "another" ? 1 : 0]
 }
 
+private static boolean completesWithin(int timeLimitInMillis, Closure closure) {
+    def startTime = System.currentTimeMillis()
+    closure()
+    def durationInMillis = System.currentTimeMillis() - startTime
+    return durationInMillis < timeLimitInMillis
+}
+
 Before(){ theScenario ->
     scenario = theScenario
 }
@@ -66,17 +73,11 @@ When(~/^a call is made to ImageSpace for a (.*) single tile overview of (.*) (.*
 
 When(~/^a call is made to ImageSpace with a time limit of (\d+) to get a (.*) thumbnail of (.*) (.*) (.*) (.*) image$/) {
     String timeLimitInMillis, String imageType, String index, String platform, String sensor, String format ->
-        def startTime = System.currentTimeMillis()
         def imageId = getImageId(format, index, platform, sensor)
-        int timeLimit = timeLimitInMillis.toInteger()
-
         def imageSpaceCall = new ImageSpaceCall()
-        imageSpaceReturnImage = imageSpaceCall.getThumbnail(imageSpaceServer, wfsServer, imageId, "256", imageType)
 
-        def durationInMillis = System.currentTimeMillis() - startTime
-        scenario.write("Time elapsed ${durationInMillis / 1000}s [$imageType, $index, $platform, $sensor, $format]")
-        if (timeLimit > 0) {
-            assert (durationInMillis < timeLimit)
+        assert completesWithin(timeLimitInMillis.toInteger()) {
+            imageSpaceReturnImage = imageSpaceCall.getThumbnail(imageSpaceServer, wfsServer, imageId, "256", imageType)
         }
 }
 
