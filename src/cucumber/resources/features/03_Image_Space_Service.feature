@@ -12,10 +12,14 @@ Feature: ImageSpaceService
     When a call is made to ImageSpace for a jpeg single tile overview of a TerraSAR-X SAR NITF20 image
     Then ImageSpace returns a jpeg that matches the validation of a TerraSAR-X SAR NITF20 image
 
-  Scenario: [IMG-03] call ImageSpace to get a thumbnail overview of an image
-#    Given a QuickBird MSI GeoTIFF image has been staged
-    When a call is made to ImageSpace to get a png thumbnail of a QuickBird MSI GeoTIFF image
-    Then ImageSpace returns a png that matches the validation of a QuickBird MSI GeoTIFF_thumbnail image
+  Scenario Outline: [IMG-3] call ImageSpace to get a thumbnail overview of an image
+#    Given that example images and thumbnails are staged
+    When a call is made to ImageSpace with a time limit of <timeLimitInMillis> to get a <thumbnailType> thumbnail of a <platform> <sensor> <format> image
+    Then ImageSpace returns a <thumbnailType> that matches the validation of a <platform> <sensor> <format>_thumbnail image
+    Examples:
+    | thumbnailType | platform  | sensor | format  | timeLimitInMillis |
+    | png           | QuickBird | MSI    | GeoTIFF | 1000              |
+    | png           | QuickBird | MSI    | GeoTIFF | 0001              |
 
   Scenario: [IMG-04] call ImageSpace to view an overview tile of an commercial msi image in red green blue band order
 #    Given a WorldView2 MSI GeoTIFF image has been staged
