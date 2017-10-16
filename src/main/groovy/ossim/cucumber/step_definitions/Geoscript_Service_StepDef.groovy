@@ -237,7 +237,11 @@ Then(~/^the service returns a JSON sorted by (.*)$/) { String field ->
         if (fieldIsString)
         {
             current = gsQueryLayerReturn.get("features").get(i).get("properties").get(field)
-            if (current != null && previous != null) assert (current.compareTo(previous) >= 0)
+            if (current != null && previous != null) {
+                // Special case for filenames since geoscript sorts alphabetically--not ASCII code based.
+                if (field == "filename") assert current.toLowerCase() >= previous.toLowerCase()
+                else assert current >= previous
+            }
             previous = current
         }
         else
