@@ -25,7 +25,10 @@ class ImageSpaceCall
                 z           : "${z}",
                 numOfBands  : "${numBands}",
                 bands       : "${bands}",
-                histOp      : "${histOp}"
+                histOp      : "${histOp}",
+                numResLevels: "${wfsCall.getNumberOfResLevels()}",
+                width       : "${wfsCall.getWidth()}",
+                height      : "${wfsCall.getHeight()}",
         ]
 
         String imageSpaceParamsString = urlParamsToString(imageSpaceParams)

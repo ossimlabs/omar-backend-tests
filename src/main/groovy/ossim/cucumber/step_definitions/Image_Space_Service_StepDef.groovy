@@ -1,8 +1,9 @@
 package ossim.cucumber.step_definitions
 
+import cucumber.api.Scenario
 import ossim.cucumber.config.CucumberConfig
-import ossim.cucumber.ogc.util.FileCompare
 import ossim.cucumber.ogc.imagespace.ImageSpaceCall
+import ossim.cucumber.ogc.util.FileCompare
 
 /**
  * Created by kfeldbush on 8/10/16.
@@ -17,6 +18,7 @@ def s3BucketUrl = config.s3BucketUrl
 def wfsServer = config.wfsServerProperty
 def imageSpaceServer = config.imageSpaceServerProperty
 def imageSpaceReturnImage
+Scenario scenario
 
 def getImageId(format, index, platform, sensor)
 {
@@ -26,6 +28,17 @@ def getImageId(format, index, platform, sensor)
 
 
     return config.images[platform][sensor][format][index == "another" ? 1 : 0]
+}
+
+private static boolean completesWithin(int timeLimitInMillis, Closure closure) {
+    def startTime = System.currentTimeMillis()
+    closure()
+    def durationInMillis = System.currentTimeMillis() - startTime
+    return durationInMillis < timeLimitInMillis
+}
+
+Before(){ theScenario ->
+    scenario = theScenario
 }
 
 When(~/^a call is made to ImageSpace for a (.*) of the entire bounding box of (.*) (.*) (.*) (.*) image$/) {
@@ -58,13 +71,14 @@ When(~/^a call is made to ImageSpace for a (.*) single tile overview of (.*) (.*
         imageSpaceReturnImage = imageSpaceCall.getImage(imageSpaceServer, wfsServer, imageId, "256", imageType, "0", "0", "0")
 }
 
-When(~/^a call is made to ImageSpace to get a (.*) thumbnail of (.*) (.*) (.*) (.*) image$/) {
-    String imageType, String index, String platform, String sensor, String format ->
-
+When(~/^a call is made to ImageSpace with a time limit of (\d+) to get a (.*) thumbnail of (.*) (.*) (.*) (.*) image$/) {
+    String timeLimitInMillis, String imageType, String index, String platform, String sensor, String format ->
         def imageId = getImageId(format, index, platform, sensor)
-
         def imageSpaceCall = new ImageSpaceCall()
-        imageSpaceReturnImage = imageSpaceCall.getThumbnail(imageSpaceServer, wfsServer, imageId, "256", imageType)
+
+        assert completesWithin(timeLimitInMillis.toInteger()) {
+            imageSpaceReturnImage = imageSpaceCall.getThumbnail(imageSpaceServer, wfsServer, imageId, "256", imageType)
+        }
 }
 
 When(~/^a call is made to ImageSpace for an overview tile in red green blue order of (.*) (.*) (.*) (.*) image$/) {
@@ -91,3 +105,13 @@ When(~/^a call is made to ImageSpace for an overview tile green band of (.*) (.*
         def imageSpaceCall = new ImageSpaceCall()
         imageSpaceReturnImage = imageSpaceCall.getImage(imageSpaceServer, wfsServer, imageId, "256", "png", "0", "0", "0", "2", "1")
 }
+//When(~/^a call is made to ImageSpace for an image's thumbnail of image id (.*)$/) {
+//    String imageId ->
+//        def imageSpaceCall = new ImageSpaceCall()
+//        imageSpaceReturnImage = imageSpaceCall.getThumbnail(imageSpaceServer, wfsServer, imageId, imageId, "png")
+//}
+//Then(~/^ImageSpace returns a thumbnail of format (.*) with size (\\d+)$/) {
+//    String imageFormat, int size ->
+//        assert (imageFormat == "png")
+//        assert (size == 256)
+//}
