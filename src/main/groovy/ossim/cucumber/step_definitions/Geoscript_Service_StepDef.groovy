@@ -10,11 +10,11 @@ this.metaClass.mixin(cucumber.api.groovy.EN)
 
 config = CucumberConfig.config
 def geoscriptService = config.geoscriptService
+def defaultMax = config.geoscriptDefaultMax
 
 def gsGetCapabilitiesReturn
 def gsGetSchemaInfoByTypeNameReturn
 def gsQueryLayerReturn
-
 def httpStatus
 
 String urlParamsToString(HashMap urlParams)
@@ -51,7 +51,8 @@ When(~/^a call is made to the Geoscript service QueryLayer with a resultType (.*
         HashMap params = [
                 typeName     : "omar:raster_entry",
                 resultType   : resultType,
-                featureFormat: featureFormat
+                featureFormat: featureFormat,
+                max          : defaultMax
         ]
 
         URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -64,7 +65,8 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON sor
             typeName     : "omar:raster_entry",
             resultType   : "results",
             featureFormat: "JSON",
-            sort         : field
+            sort         : field,
+            max          : defaultMax
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -87,7 +89,8 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
             typeName     : "omar:raster_entry",
             resultType   : "results",
             featureFormat: "JSON",
-            fields       : field
+            fields       : field,
+            max          : defaultMax
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -104,7 +107,8 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
                 typeName     : "omar:raster_entry",
                 resultType   : "results",
                 featureFormat: "JSON",
-                fields       : field
+                fields       : field,
+                max          : defaultMax
         ]
 
         URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -130,7 +134,8 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
             typeName     : "omar:raster_entry",
             resultType   : "results",
             featureFormat: "JSON",
-            filter       : filter
+            filter       : filter,
+            max          : defaultMax
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -165,7 +170,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid resul
     HashMap params = [
             typeName     : "omar:raster_entry",
             resultType   : "ThisIsFoobar",
-            featureFormat: "JSON",
+            featureFormat: "JSON"
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
@@ -177,7 +182,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid featu
     HashMap params = [
             typeName     : "omar:raster_entry",
             resultType   : "results",
-            featureFormat: "500ErrorsForEveryone",
+            featureFormat: "500ErrorsForEveryone"
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
