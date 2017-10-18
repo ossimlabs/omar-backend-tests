@@ -18,6 +18,8 @@ wfsUrl = "${rbtcloudRootDir}/omar-wfs"
 wmsUrl = "${rbtcloudRootDir}/omar-wms"
 wmtsUrl = "${rbtcloudRootDir}/omar-wmts"
 
+geoscriptDefaultMax = 15
+
 // minutes to wait
 waitForStage = 5
 
