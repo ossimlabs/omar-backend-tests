@@ -39,14 +39,7 @@ def getImageId(format, index, platform, sensor)
 
 def filterUsingImageId(imageId)
 {
-    if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
-    {
-        "title LIKE 'SIDD: ${imageId}'"
-    }
-    else
-    {
-        "title LIKE '${imageId}'"
-    }
+    "enbtry_id='0' and title LIKE '%${imageId}%'"
 }
 
 
