@@ -39,7 +39,7 @@ def getImageId(format, index, platform, sensor)
 
 def filterUsingImageId(imageId)
 {
-    "enbtry_id='0' and title LIKE '%${imageId}%'"
+    "entry_id='0' and title LIKE '%${imageId}%'"
 }
 
 
