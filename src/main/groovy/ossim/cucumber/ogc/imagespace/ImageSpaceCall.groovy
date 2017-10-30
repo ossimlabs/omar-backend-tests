@@ -51,6 +51,7 @@ class ImageSpaceCall
                 filename    : "${wfsFilename}",
                 size        : "${size}",
                 outputFormat: "${return_image_type}",
+                entry       : "0"
         ]
 
         String imageSpaceParamsString = urlParamsToString(imageSpaceParams)
