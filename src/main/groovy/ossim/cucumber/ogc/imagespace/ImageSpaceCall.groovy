@@ -12,7 +12,7 @@ class ImageSpaceCall
     URL getImage(imageSpaceServer, wfsServer, imageID, tile_size = 256, return_image_type, x, y, z, bands = "default", numBands = 1, histOp = "auto-minmax")
     {
 
-        def filter = "filename LIKE '%${imageID}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageID}%'"
         def wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
         String wfsFilename = wfsCall.getFilename()
 
@@ -42,7 +42,7 @@ class ImageSpaceCall
     URL getThumbnail(imageSpaceServer, wfsServer, imageID, size = 256, return_image_type)
     {
 
-        def filter = "filename LIKE '%${imageID}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageID}%'"
         WFSCall wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
         String wfsFilename = wfsCall.getFilename()
 
