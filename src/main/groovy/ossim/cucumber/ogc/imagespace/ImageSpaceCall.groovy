@@ -29,6 +29,7 @@ class ImageSpaceCall
                 numResLevels: "${wfsCall.getNumberOfResLevels()}",
                 width       : "${wfsCall.getWidth()}",
                 height      : "${wfsCall.getHeight()}",
+                entry       : "0"
         ]
 
         String imageSpaceParamsString = urlParamsToString(imageSpaceParams)
