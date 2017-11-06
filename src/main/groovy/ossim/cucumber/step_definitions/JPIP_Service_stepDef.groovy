@@ -29,7 +29,8 @@ When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*)
         // Need to wait until the image has been processed.
         // The initial "READY" state turns to "FINISHED" when done.
         assert waitForTrueOrTimeout(timeoutInMillis) {
-            jpipResponse = jsonSlurper.parse(createStreamUrl)["status"] == "FINISHED"
+            jpipResponse = jsonSlurper.parse(createStreamUrl)["status"]
+            jpipResponse == "FINISHED"
         }
 }
 

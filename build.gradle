@@ -50,7 +50,8 @@ task backend() {
             classpath = configurations.cucumberRuntime
             args = [
                     "--tags",
-                    "@image_space, @mensa_service, @wfs_image_search, @wms_ortho, @web_coverage_service, @map_tile_service, @omar_geoscript, @o2_basemap, @ngt_service, @jpip_service",
+//                    "@image_space, @mensa_service, @wfs_image_search, @wms_ortho, @web_coverage_service, @map_tile_service, @omar_geoscript, @o2_basemap, @ngt_service, @jpip_service",
+                    "@jpip_service",
                     "--tags",
                     "~@C2S",
                     '--plugin', 'json:build/backend.json',
