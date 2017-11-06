@@ -23,7 +23,7 @@ Given(~/the JPIP service is running/) { ->
 When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*) and project code (.*) with a (.*) millisecond timeout/) {
     String imagePath, String entry, String projCode, String timeoutStringMillis ->
         int timeoutInMillis = timeoutStringMillis.toInteger()
-        URL createStreamUrl = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode%22%20-H%20%22accept:%20application/json".toURL()
+        URL createStreamUrl = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode".toURL()
         def jsonSlurper = new JsonSlurper()
 
         // Need to wait until the image has been processed.
