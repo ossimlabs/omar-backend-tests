@@ -33,7 +33,7 @@ When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*)
         }
 }
 
-Then(~/^the JPIP service returns a status of FINISHED without timing out/) {
+Then(~/^the JPIP service returns a status of FINISHED without timing out/) { ->
     assert jpipResponse == "FINISHED"
 }
 
