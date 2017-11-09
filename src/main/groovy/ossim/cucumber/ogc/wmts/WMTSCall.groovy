@@ -67,7 +67,7 @@ class WMTSCall
         params.tileCol = centerTileInfo.tile.x
         params.tileMatrix = centerTileInfo.tile.z
         params.tileMatrixSet = layer.tileMatrixName
-        params.styles = URLEncoder.encode("""{"nullPixelFlip": false}""", Charset.defaultCharset().displayName()),
+        params.styles = URLEncoder.encode("{\"nullPixelFlip\": false}", Charset.defaultCharset().displayName()),
 
         String urlParamsString = urlParamsToString(params)
         String url = "${wmtsServer}/getTile?${urlParamsString}"
@@ -95,7 +95,7 @@ class WMTSCall
         params.tileCol = 0
         params.tileMatrix = layer.maxLevel
         params.tileMatrixSet = layer.tileMatrixName
-        params.styles = URLEncoder.encode("""{"nullPixelFlip": false}""", Charset.defaultCharset().displayName()),
+        params.styles = URLEncoder.encode("{\"nullPixelFlip\": false}", Charset.defaultCharset().displayName()),
 
         String urlParamsString = urlParamsToString(params)
         String url = "${wmtsServer}/getTile?${urlParamsString}"
@@ -122,7 +122,7 @@ class WMTSCall
         result
     }
 
-    static String urlParamsToString(HashMap urlParams)
+    static String urlg(HashMap urlParams)
     {
         urlParams.collect() { k, v -> "${k}=${v}" }.join("&")?.toString()
     }
