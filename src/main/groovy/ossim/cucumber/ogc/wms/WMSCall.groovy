@@ -26,7 +26,7 @@ class WMSCall {
         WIDTH:"${width}",
         HEIGHT:"${height}",
         FORMAT:"image/${return_image_type}",
-        STYLES:URLEncoder.encode("{nullPixelFlip: false}", Charset.defaultCharset().displayName()),
+        STYLES:URLEncoder.encode("""{"nullPixelFlip": false}""", Charset.defaultCharset().displayName()),
         TRANSPARENT:true,
         FILTER: URLEncoder.encode(filter, Charset.defaultCharset().displayName())
       ]
