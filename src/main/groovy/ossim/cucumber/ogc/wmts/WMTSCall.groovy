@@ -8,6 +8,7 @@ import geoscript.proj.Projection
 import groovy.json.JsonSlurper
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
+import java.nio.charset.Charset
 
 class WMTSCall
 {
