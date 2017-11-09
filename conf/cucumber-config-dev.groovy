@@ -12,6 +12,7 @@ wmtsServerProperty = "${rbtcloudRootDir}/omar-wmts/wmts"
 geoscriptService = "${rbtcloudRootDir}/omar-geoscript/geoscriptApi"
 imageSpaceServerProperty = "${rbtcloudRootDir}/omar-oms/imageSpace"
 ngtService = "${rbtcloudRootDir}/ngt-service/ngt"
+jpipService = "${rbtcloudRootDir}/omar-jpip/jpip"
 
 mensaUrl = "${rbtcloudRootDir}/omar-mensa"
 wfsUrl = "${rbtcloudRootDir}/omar-wfs"
