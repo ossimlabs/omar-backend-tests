@@ -8,7 +8,6 @@ import geoscript.proj.Projection
 import groovy.json.JsonSlurper
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
-import java.nio.charset.Charset
 
 class WMTSCall
 {
@@ -123,7 +122,7 @@ class WMTSCall
         result
     }
 
-    static String urlg(HashMap urlParams)
+    static String urlParamsToString(HashMap urlParams)
     {
         urlParams.collect() { k, v -> "${k}=${v}" }.join("&")?.toString()
     }
