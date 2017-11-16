@@ -40,7 +40,7 @@ Given(~/^(.*) (.*) (.*) (.*) image has been staged$/) {
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "filename LIKE '%${imageId}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         def wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
 
@@ -59,16 +59,7 @@ When(~/^a call is made to Ortho WMS with an image type of (.*) for the entire bo
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter
-
-        if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
-        {
-            filter = "title LIKE 'SIDD: ${imageId}'"
-        }
-        else
-        {
-            filter = "title LIKE '${imageId}'"
-        }
+        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
 
         def wmsCall = new WMSCall()
         def bbox = wmsCall.getBBox(wfsServer, filter)
@@ -81,16 +72,7 @@ When(~/^a call is made to Ortho WMS with a 512 by 512 (.*) image for the entire 
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        //  def filter = "title LIKE '${imageId}'"
-
-        if (imageId == "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG")
-        {
-            filter = "title LIKE 'SIDD: ${imageId}'"
-        }
-        else
-        {
-            filter = "title LIKE '${imageId}'"
-        }
+        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
 
         def wmsCall = new WMSCall()
         def bbox = wmsCall.getBBox(wfsServer, filter)
@@ -104,7 +86,7 @@ When(~/^a call is made to Ortho WMS with an image type of (.*) for a 256 by 256 
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "title LIKE '${imageId}'"
+        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
         def wmsCall = new WMSCall()
         def bbox = wmsCall.getBBox(wfsServer, filter)
 
@@ -119,7 +101,7 @@ When(~/^a WMS call is made for (.*) (.*) (.*) (.*) image and (.*) (.*) (.*) (.*)
 
         def images = []
         [imageId1, imageId2].each {
-            def wfsQuery = new WFSCall(wfsServer, "filename LIKE '%${it.trim()}%'", "JSON", 1)
+            def wfsQuery = new WFSCall(wfsServer, "entry_id='0' and filename LIKE '%${it.trim()}%'", "JSON", 1)
             def json = new JsonSlurper().parseText(wfsQuery.text)
             images << json.features[0]
         }

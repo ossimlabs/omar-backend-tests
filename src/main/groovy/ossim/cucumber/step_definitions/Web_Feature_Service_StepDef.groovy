@@ -29,7 +29,7 @@ def getImageId(format, index, platform, sensor)
 }
 
 Given(~/^image "([^"]*)" has been staged in the system$/) { String imageID ->
-    def filter = "filename LIKE '%${imageId}%'"
+    def filter = "entry_id='0' and filename LIKE '%${imageId}%'"
     wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
     numFeatures = wfsCall.getNumFeatures()
     assert numFeatures > 0
@@ -165,7 +165,7 @@ When(~/^a WFS call is made to search for (.*) (.*) (.*) (.*) image$/) {
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "title LIKE '${imageId}'"
+        def filter = "entry_id='0' and title LIKE '${imageId}'"
         wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
 }
 

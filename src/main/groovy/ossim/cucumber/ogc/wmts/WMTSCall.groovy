@@ -8,6 +8,7 @@ import geoscript.proj.Projection
 import groovy.json.JsonSlurper
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
+import java.nio.charset.Charset
 
 class WMTSCall
 {
@@ -67,6 +68,7 @@ class WMTSCall
         params.tileCol = centerTileInfo.tile.x
         params.tileMatrix = centerTileInfo.tile.z
         params.tileMatrixSet = layer.tileMatrixName
+        params.styles = URLEncoder.encode("{\"nullPixelFlip\": false}", Charset.defaultCharset().displayName())
 
         String urlParamsString = urlParamsToString(params)
         String url = "${wmtsServer}/getTile?${urlParamsString}"
@@ -93,6 +95,7 @@ class WMTSCall
         params.tileCol = 0
         params.tileMatrix = layer.maxLevel
         params.tileMatrixSet = layer.tileMatrixName
+        params.styles = URLEncoder.encode("{\"nullPixelFlip\": false}", Charset.defaultCharset().displayName())
 
         String urlParamsString = urlParamsToString(params)
         String url = "${wmtsServer}/getTile?${urlParamsString}"
