@@ -6,4 +6,4 @@ Feature: JPIP Service
     Then the JPIP service returns a status of FINISHED without timing out
     Examples:
       | imagePath                                             | entry | projCode | timeout |
-      | /data/s3/2009/02/05/00/105001000C126400-1220100.tif   | 0     | 4326     | 5000    |
+      |  /data/s3/2009/02/05/00/po_106005_pan_0000000.ntf   | 0     | 4326     | 5000    |
