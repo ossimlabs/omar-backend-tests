@@ -80,6 +80,9 @@ Then(~/^the WFS call returns metadata in a (.*) format$/) { String format ->
         case "KML":
             try
             {
+            pritnln "*"*40
+            println text
+            pritnln "*"*40
                 def xml = new XmlSlurper().parseText(text)
                 succeeded = true
             }
@@ -180,7 +183,7 @@ When(~/^WFS GetCapabilities call is made$/) { ->
     wfsGetCapabilitiesReturn = wfsGetCapabilities.wfsGetCapabilitiesResult
 }
 
-When(~/^a WFS post to omar-oldmar with a filter in xml format is made$/){->
+When(~/^a WFS post to omar-oldmar with a filter in xml format is madeg$/){->
     wfsCall = new WFSCall();
     println "POSTING STRING\n${config.wfsPostString} \nto URL: ${wfsServer}"
     wfsCall.getFeaturePost("${omarOldmarProxy}/wfs".toString(), config.wfsPostString)
