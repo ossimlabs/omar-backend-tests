@@ -77,4 +77,4 @@ Feature: SearchWFSService
   Scenario: WFS call to verify omar-oldmar Post with filter
     Given that the WFS service is available
     When a WFS post to omar-oldmar with a filter in xml format is made
-    Then the WFS call returns metadata in a GML3 format
+    Then the WFS call returns metadata in a GML2 format

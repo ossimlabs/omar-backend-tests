@@ -77,6 +77,7 @@ Then(~/^the WFS call returns metadata in a (.*) format$/) { String format ->
             }
             break
         case "GML3":
+        case "GML2":
         case "KML":
             try
             {
