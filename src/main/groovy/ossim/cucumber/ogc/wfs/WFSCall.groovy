@@ -88,13 +88,13 @@ class WFSCall
             reqEntity.setChunked(true)
 
             httpPost.setEntity(reqEntity)
-            result = resEntity.content.text
 
             response = httpClient.execute(httpPost)
             HttpEntity resEntity = response.getEntity()
-
+ 
             status = response.getStatusLine()
             if (resEntity != null) {
+                result = resEntity.content.text
                 println  "Response content length: " + resEntity.getContentLength()
                 println "Response Chunked?: " + resEntity.isChunked()
                 println "Response Encoding: " + resEntity.contentEncoding
