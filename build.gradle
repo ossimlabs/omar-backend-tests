@@ -48,9 +48,14 @@ task backend() {
         javaexec {
             main = "cucumber.api.cli.Main"
             classpath = configurations.cucumberRuntime
+            if(System.env?.JVM_ARGS){
+                println System.env?.JVM_ARGS
+                jvmArgs = System.env.JVM_ARGS.split(" ").collect(){it.toString()}
+            }
             args = [
                     "--tags",
-                    "@image_space, @mensa_service, @wfs_image_search, @wms_ortho, @web_coverage_service, @map_tile_service, @omar_geoscript, @o2_basemap, @ngt_service, @jpip_service",
+                  //  "@image_space, @mensa_service, @wfs_image_search, @wms_ortho, @web_coverage_service, @map_tile_service, @omar_geoscript, @o2_basemap, @ngt_service, @jpip_service",
+                    "@wfs_image_search",
                     "--tags",
                     "~@C2S",
                     '--plugin', 'json:build/backend.json',

@@ -178,3 +178,10 @@ When(~/^WFS GetCapabilities call is made$/) { ->
     def wfsGetCapabilities = new WFSGetCapabilities(wfsServer)
     wfsGetCapabilitiesReturn = wfsGetCapabilities.wfsGetCapabilitiesResult
 }
+
+When(~/^a WFS post with a filter in xml format is made$/){->
+    wfsCall = new WFSCall();
+    println "POSTING STRING\n${config.wfsPostString} \nto URL: ${wfsServer}"
+    wfsCall.getFeaturePost(wfsServer, config.wfsPostString)
+    println wfsCall.result
+}

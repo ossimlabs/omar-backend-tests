@@ -8,6 +8,14 @@ import javax.net.ssl.*
 import java.nio.charset.Charset
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import org.apache.http.HttpEntity
+import org.apache.http.HttpResponse
+import org.apache.http.client.HttpClient 
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.StringEntity
+import org.apache.http.impl.client.DefaultHttpClient
+
+
 
 class WFSCall
 {
@@ -15,9 +23,10 @@ class WFSCall
     String text
 
     WFSCall(){}
-
+/*
     static void initSsl()
     {
+        println "************************************"
         TrustManager[] trustAllCerts = [
             new X509TrustManager() {
                 X509Certificate[] getAcceptedIssuers()
@@ -42,7 +51,7 @@ class WFSCall
             }
         }
     }
-
+*/
     WFSCall(wfsServer, filter, outputFormat, maxFeatures)
     {
         HashMap wfsParams = [
@@ -64,7 +73,41 @@ class WFSCall
         text = wfsText.text
         result = outputFormat == "JSON" ? new JsonSlurper().parseText(text) : text
     }
+    void getFeaturePost(String wfsServer, String postString)
+    {
+        HttpClient httpClient = new DefaultHttpClient()
+        HttpResponse response
+        result = ""
+        try {
+            HttpPost httpPost = new HttpPost(wfsServer)
+            httpPost.setHeader("Content-Type", "text/xml")
 
+            HttpEntity reqEntity = new StringEntity(postString, "UTF-8")
+            reqEntity.setContentType("text/xml")
+            reqEntity.setChunked(true)
+
+            httpPost.setEntity(reqEntity)
+            println "executing request " + httpPost.getRequestLine()
+
+            response = httpClient.execute(httpPost)
+            HttpEntity resEntity = response.getEntity()
+
+            result = response.getStatusLine()
+            if (resEntity != null) {
+                println  "Response content length: " + resEntity.getContentLength()
+                println "Response Chunked?: " + resEntity.isChunked()
+                println "Response Encoding: " + resEntity.contentEncoding
+                println "Response Content: " + resEntity.content.text
+            }
+            // EntityUtils.consume(resEntity);
+        }
+        finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpClient.getConnectionManager().shutdown()
+        }
+    }
     int getNumFeatures()
     {
         result.features.size()
