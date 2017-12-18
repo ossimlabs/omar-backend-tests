@@ -17,6 +17,7 @@ def wfsServer = config.wfsServerProperty
 def wfsUrl = config.wfsUrl
 def wfsGetCapabilitiesReturn
 def wfsCall
+def omarOldmarProxy = config.omarOldmarProxy
 
 def getImageId(format, index, platform, sensor)
 {
@@ -182,6 +183,6 @@ When(~/^WFS GetCapabilities call is made$/) { ->
 When(~/^a WFS post with a filter in xml format is made$/){->
     wfsCall = new WFSCall();
     println "POSTING STRING\n${config.wfsPostString} \nto URL: ${wfsServer}"
-    wfsCall.getFeaturePost(wfsServer, config.wfsPostString)
+    wfsCall.getFeaturePost("${omarOldmarProxy}/wfs".toString(), config.wfsPostString)
     println wfsCall.result
 }
