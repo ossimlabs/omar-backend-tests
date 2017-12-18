@@ -80,9 +80,9 @@ Then(~/^the WFS call returns metadata in a (.*) format$/) { String format ->
         case "KML":
             try
             {
-            pritnln "*"*40
+            println "*"*40
             println text
-            pritnln "*"*40
+            println "*"*40
                 def xml = new XmlSlurper().parseText(text)
                 succeeded = true
             }
