@@ -94,11 +94,11 @@ class WFSCall
  
             status = response.getStatusLine()
             if (resEntity != null) {
-                result = resEntity.content.text
+                text = resEntity.content.text
                 println  "Response content length: " + resEntity.getContentLength()
                 println "Response Chunked?: " + resEntity.isChunked()
                 println "Response Encoding: " + resEntity.contentEncoding
-                println "Response Content: " + result
+                println "Response Content: " + text
             }
             // EntityUtils.consume(resEntity);
         }
