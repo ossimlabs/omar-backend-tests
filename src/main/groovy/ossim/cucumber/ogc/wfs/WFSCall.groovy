@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient
 class WFSCall
 {
     def result
+    def status
     String text
 
     WFSCall(){}
@@ -87,12 +88,12 @@ class WFSCall
             reqEntity.setChunked(true)
 
             httpPost.setEntity(reqEntity)
-            println "executing request " + httpPost.getRequestLine()
+            result = httpPost.getRequestLine()
 
             response = httpClient.execute(httpPost)
             HttpEntity resEntity = response.getEntity()
 
-            result = response.getStatusLine()
+            status = response.getStatusLine()
             if (resEntity != null) {
                 println  "Response content length: " + resEntity.getContentLength()
                 println "Response Chunked?: " + resEntity.isChunked()

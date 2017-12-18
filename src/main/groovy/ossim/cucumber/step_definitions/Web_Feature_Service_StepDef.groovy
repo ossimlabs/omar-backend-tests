@@ -180,7 +180,7 @@ When(~/^WFS GetCapabilities call is made$/) { ->
     wfsGetCapabilitiesReturn = wfsGetCapabilities.wfsGetCapabilitiesResult
 }
 
-When(~/^a WFS post with a filter in xml format is made$/){->
+When(~/^WFS call to verify OMAR_OLDMAR Post with filter is Good$/){->
     wfsCall = new WFSCall();
     println "POSTING STRING\n${config.wfsPostString} \nto URL: ${wfsServer}"
     wfsCall.getFeaturePost("${omarOldmarProxy}/wfs".toString(), config.wfsPostString)

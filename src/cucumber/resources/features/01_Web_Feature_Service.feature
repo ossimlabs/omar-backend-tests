@@ -74,7 +74,7 @@ Feature: SearchWFSService
 #    When a WFS call is made to with an output format of KML
 #    Then the WFS call returns metadata in a KML format
 
-  Scenario: WFS call to verify Post with filter is Good
+  Scenario: WFS call to verify OMAR_OLDMAR Post with filter is Good
     Given that the WFS service is available
     When a WFS post with a filter in xml format is made
-    Then the WFS call returns metadata in a JSON format
+    Then the WFS call returns metadata in a GML3 format
