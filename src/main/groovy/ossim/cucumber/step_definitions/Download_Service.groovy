@@ -32,7 +32,7 @@ def getImageId(format, index, platform, sensor) {
 }
 
 Given(~/^that the download service is running$/) { ->
-    def healthText = new URL("$downloadService/health").text
+    def healthText = new URL("${downloadService}/health").text
     def healthJson = new JsonSlurper().parseText(healthText)
 
 
