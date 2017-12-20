@@ -5,6 +5,8 @@ s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
 s3BasemapUrlList = "Basemaptest-rel.txt"
 
+downloadService = "${rbtcloudRootDir}/omar-download"
+stagingService = "${rbtcloudRootDir}/omar-stager/dataManager"
 wfsServerProperty = "${rbtcloudRootDir}/omar-wfs/wfs"
 wmsServerProperty = "${rbtcloudRootDir}/omar-wms/wms"
 wcsServerProperty = "${rbtcloudRootDir}/omar-wcs/wcs"

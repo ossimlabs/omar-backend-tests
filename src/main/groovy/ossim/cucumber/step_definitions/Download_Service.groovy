@@ -32,8 +32,6 @@ def getImageId(format, index, platform, sensor) {
 }
 
 Given(~/^that the download service is running$/) { ->
-    println "DEBUG CONFIG: $downloadService"
-    println "DEBUG CONFIG: ${config.downloadService}"
     def healthText = new URL("${downloadService}/health").text
     def healthJson = new JsonSlurper().parseText(healthText)
 
