@@ -18,7 +18,7 @@ File wmtsReturnImage
 def wmtsLayers
 def wmtsGetCapabilitiesReturn
 def wmtsTiles
-def wmtsValidationTile = "WMTS_verification_images/wmtsValidationImage_WorldGeographic_14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG"
+def wmtsValidationTile = "WMTS_verification_images/wmtsValidationImage_WorldGeographic_2010-12-05T221358_RE2_3A-NAC_6683383_113276"
 def error = false
 
 config = CucumberConfig.config
@@ -55,7 +55,7 @@ When(~/^a call is made to WMTS for a (.*) image the for the entire bounding box 
     String imageType, String index, String platform, String sensor, String format ->
 
         def imageId = getImageId(format, index, platform, sensor)
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
@@ -73,7 +73,7 @@ When(~/^a call is made to WMTS for a (.*) outside entire bounding box of (.*) (.
     String imageType, String index, String platform, String sensor, String format ->
 
         def imageId = getImageId(format, index, platform, sensor)
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         try
         {
@@ -111,7 +111,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
         HashMap layerHashMap = wmtsLayers[0] as HashMap
@@ -137,7 +137,7 @@ Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String im
 
     wmtsReturnImage.deleteOnExit()
     validFile.deleteOnExit()
-    
+
     def fileComp = new FileCompare()
     assert fileComp.checkImages(validFile, wmtsReturnImage)
 }

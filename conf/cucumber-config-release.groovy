@@ -5,6 +5,8 @@ s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
 s3BasemapUrlList = "Basemaptest-rel.txt"
 
+downloadService = "${rbtcloudRootDir}/omar-download"
+stagingService = "${rbtcloudRootDir}/omar-stager/dataManager"
 wfsServerProperty = "${rbtcloudRootDir}/omar-wfs/wfs"
 wmsServerProperty = "${rbtcloudRootDir}/omar-wms/wms"
 wcsServerProperty = "${rbtcloudRootDir}/omar-wcs/wcs"
@@ -83,11 +85,16 @@ images = [
             nitf20: [ "11MAR08WV010500008MAR11071429-P1BS-005707719010_04_P003" ]
         ]
     ],
+    local: [
+            hsi:[
+                    envi:"/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi"
+            ]
+    ],
     remote: [
         quickbirdpan: [
             nitf:[
               s3: "s3://o2-test-data/direct-test/celtic/007/po_105215_pan_0000000.ntf",
-              mount: "/s3/o2-test-data/direct-test/celtic/007/po_105215_pan_0000000.ntf",
+              mount: "/data/direct-test/celtic/staged/007/po_105215_pan_0000000.ntf",
             ]
         ]
     ]

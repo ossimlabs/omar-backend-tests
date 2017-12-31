@@ -34,6 +34,7 @@ class ImageSpaceCall
 
         String imageSpaceParamsString = urlParamsToString(imageSpaceParams)
         imageSpaceUrlString = "${imageSpaceServer}/getTile?${imageSpaceParamsString}"
+        println imageSpaceUrlString
 
         imageSpaceUrl = new URL(imageSpaceUrlString)
 
