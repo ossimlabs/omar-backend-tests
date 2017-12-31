@@ -79,6 +79,8 @@ class WMSCall {
           }
         }
 
+      println "WKTGEOMETRYSTRING"
+      println wktGeometryString
       def geom = new WKTReader().read(wktGeometryString)
       def envelope = geom.envelopeInternal
       "${envelope.minX},${envelope.minY},${envelope.maxX},${envelope.maxY}"
