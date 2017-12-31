@@ -184,5 +184,4 @@ When(~/^WFS GetCapabilities call is made$/) { ->
 When(~/^a WFS post to omar-oldmar with a filter in xml format is made$/){->
     wfsCall = new WFSCall();
     wfsCall.getFeaturePost("${omarOldmarProxy}/wfs".toString(), config.wfsPostString)
-    println wfsCall.result
 }
