@@ -87,7 +87,7 @@ images = [
                 quickbirdpan: [
                         nitf:[
                                 s3: "s3://o2-test-data/direct-test/celtic/007/po_105215_pan_0000000.ntf",
-                                mount: "/s3/o2-test-data/direct-test/celtic/007/po_105215_pan_0000000.ntf",
+                                mount: "/data/direct-test/celtic/staged/007/po_105215_pan_0000000.ntf",
                         ]
                 ]
         ]
