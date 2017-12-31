@@ -11,22 +11,22 @@ Feature: OrthoWMSService
     When a call is made to Ortho WMS with an image type of png for the entire bounding box of a GeoEye MSI NITF21 image
     Then Ortho WMS returns a png that matches the validation of a GeoEye MSI NITF21_dev image
 
-#  Disable use of TerraSAR image until NITF's larger than 4k X 4k pixels are allowed.
-#  Scenario: [WMS-03] call Ortho WMS to view a full screen jpeg image of an entire commercial SAR image
-#    Given a TerraSAR-X SAR NITF20 image has been staged
-#    When a call is made to Ortho WMS with an image type of jpeg for the entire bounding box of a TerraSAR-X SAR NITF20 image
-#    Then Ortho WMS returns a jpeg that matches the validation of a TerraSAR-X SAR NITF20_dev image
+#  Disable use of TerraSAR image until NITF's larger than 4k X 4k pixels are allowed. Replaced with Rapideye MSI GeoTIFF
+  Scenario: [WMS-03] call Ortho WMS to view a full screen jpeg image of an entire commercial Rapideye MSI GeoTIFF image
+    Given a Rapideye MSI GeoTIFF image has been staged
+    When a call is made to Ortho WMS with an image type of jpeg for the entire bounding box of a Rapideye MSI GeoTIFF image
+    Then Ortho WMS returns a jpeg that matches the validation of a Rapideye MSI GeoTIFF image
 
   Scenario: [WMS-04] call ortho WMS for full resolution image chip
     Given a GeoEye PAN NITF21 image has been staged
     When a call is made to Ortho WMS with an image type of png for a 256 by 256 chip of a GeoEye PAN NITF21 image at full resolution
     Then Ortho WMS returns a png that matches the validation of a GeoEye PAN NITF21_chip_dev image
 
-#  Disable use of TerraSAR image until NITF's larger than 4k X 4k pixels are allowed.
-#  Scenario: [WMS-05] call Ortho WMS to view a full screen image of an entire commercial SAR image
-#    Given a TerraSAR-X SAR NITF20 image has been staged
-#    When a call is made to Ortho WMS with a 512 by 512 jpeg image for the entire bounding box of a TerraSAR-X SAR NITF20 image
-#    Then Ortho WMS returns a jpeg in less than 1.5 seconds
+#  Disable use of TerraSAR image until NITF's larger than 4k X 4k pixels are allowed. Replace with Rapideye MSI GeoTIFF
+  Scenario: [WMS-05] call Ortho WMS to view a full screen image of an entire commercial Rapideye MSI GeoTIFF image
+    Given a Rapideye MSI GeoTIFF image has been staged
+    When a call is made to Ortho WMS with a 512 by 512 jpeg image for the entire bounding box of a Rapideye MSI GeoTIFF image
+    Then Ortho WMS returns a jpeg in less than 1.5 seconds
 
   Scenario: [WMS-06] Call WMS GetCapabilities version 1.1.1
     When a system calls WMS GetCapabilities version 1.1.1

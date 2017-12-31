@@ -7,7 +7,7 @@ Feature: ImageSpaceService
     When a call is made to ImageSpace for a png of the entire bounding box of a GeoEye MSI NITF21 image
     Then ImageSpace returns a png that matches the validation of a GeoEye MSI NITF21 image
 
-  Scenario: [IMG-02] call ImageSpace to view a single tile of overview jpeg image of an entire commercial SAR image
+  Scenario: [IMG-02] call ImageSpace to view a single tile of overview jpeg image of an entire Rapideye MSI GeoTIFF image
     Given a Rapideye MSI GeoTIFF image has been staged
     When a call is made to ImageSpace for a jpeg single tile overview of a Rapideye MSI GeoTIFF image
     Then ImageSpace returns a jpeg that matches the validation of a Rapideye MSI GeoTIFF image
