@@ -33,6 +33,7 @@ class WMSCall {
 
       String wmsParamsString = urlParamsToString(wmsParams)
       String wmsUrlString = "${wmsServer}/getMap?${wmsParamsString}"
+      println wmsUrlString
 
       //start timer
       Date startWmsCall = new Date()
