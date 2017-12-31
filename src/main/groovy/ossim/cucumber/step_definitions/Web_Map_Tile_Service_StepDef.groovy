@@ -55,7 +55,7 @@ When(~/^a call is made to WMTS for a (.*) image the for the entire bounding box 
     String imageType, String index, String platform, String sensor, String format ->
 
         def imageId = getImageId(format, index, platform, sensor)
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
@@ -73,7 +73,7 @@ When(~/^a call is made to WMTS for a (.*) outside entire bounding box of (.*) (.
     String imageType, String index, String platform, String sensor, String format ->
 
         def imageId = getImageId(format, index, platform, sensor)
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         try
         {
@@ -111,7 +111,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        String filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
         HashMap layerHashMap = wmtsLayers[0] as HashMap
@@ -137,7 +137,7 @@ Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String im
 
     wmtsReturnImage.deleteOnExit()
     validFile.deleteOnExit()
-    
+
     def fileComp = new FileCompare()
     assert fileComp.checkImages(validFile, wmtsReturnImage)
 }

@@ -58,7 +58,6 @@ class WMSCall {
         def wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
         String wfsResult = wfsCall.getResultText()
         def jsonWfs = new JsonSlurper().parseText(wfsResult)
-        println jsonWfs
 
         if(jsonWfs){
           jsonWfs.features.each{ feature ->
@@ -79,8 +78,6 @@ class WMSCall {
           }
         }
 
-      println "WKTGEOMETRYSTRING"
-      println wktGeometryString
       def geom = new WKTReader().read(wktGeometryString)
       def envelope = geom.envelopeInternal
       "${envelope.minX},${envelope.minY},${envelope.maxX},${envelope.maxY}"

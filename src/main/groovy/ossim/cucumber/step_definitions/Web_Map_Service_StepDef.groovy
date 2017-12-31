@@ -59,10 +59,9 @@ When(~/^a call is made to Ortho WMS with an image type of (.*) for the entire bo
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         def wmsCall = new WMSCall()
-        println filter
         def bbox = wmsCall.getBBox(wfsServer, filter)
 
         wmsReturnImage = wmsCall.getImage(wmsServer, imageType, bbox, filter)
@@ -73,7 +72,7 @@ When(~/^a call is made to Ortho WMS with a 512 by 512 (.*) image for the entire 
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageId}%'"
 
         def wmsCall = new WMSCall()
         def bbox = wmsCall.getBBox(wfsServer, filter)
@@ -87,7 +86,7 @@ When(~/^a call is made to Ortho WMS with an image type of (.*) for a 256 by 256 
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        def filter = "entry_id='0' and title LIKE '%${imageId}%'"
+        def filter = "entry_id='0' and filename LIKE '%${imageId}%'"
         def wmsCall = new WMSCall()
         def bbox = wmsCall.getBBox(wfsServer, filter)
 

@@ -10,7 +10,7 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
-import org.apache.http.client.HttpClient 
+import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
@@ -91,14 +91,10 @@ class WFSCall
 
             response = httpClient.execute(httpPost)
             HttpEntity resEntity = response.getEntity()
- 
+
             status = response.getStatusLine()
             if (resEntity != null) {
                 text = resEntity.content.text
-                println  "Response content length: " + resEntity.getContentLength()
-                println "Response Chunked?: " + resEntity.isChunked()
-                println "Response Encoding: " + resEntity.contentEncoding
-                println "Response Content: " + text
             }
             // EntityUtils.consume(resEntity);
         }
