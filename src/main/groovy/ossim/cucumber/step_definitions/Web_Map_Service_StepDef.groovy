@@ -62,6 +62,7 @@ When(~/^a call is made to Ortho WMS with an image type of (.*) for the entire bo
         def filter = "entry_id='0' and title LIKE '%${imageId}%'"
 
         def wmsCall = new WMSCall()
+        println filter
         def bbox = wmsCall.getBBox(wfsServer, filter)
 
         wmsReturnImage = wmsCall.getImage(wmsServer, imageType, bbox, filter)

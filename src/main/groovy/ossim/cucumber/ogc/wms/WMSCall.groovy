@@ -58,6 +58,7 @@ class WMSCall {
         def wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
         String wfsResult = wfsCall.getResultText()
         def jsonWfs = new JsonSlurper().parseText(wfsResult)
+        println jsonWfs
 
         if(jsonWfs){
           jsonWfs.features.each{ feature ->
