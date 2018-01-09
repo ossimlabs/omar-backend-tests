@@ -12,7 +12,7 @@ String defaultCharset = Charset.defaultCharset().displayName()
 
 config = CucumberConfig.config
 def wfsServer = config.wfsServerProperty
-def httpResponse
+def superOverlayService = config.superOverlayProperty
 
 /**
  * Get's the imageId from the config for given params.
@@ -61,7 +61,7 @@ When(~/^the superoverlay service is called to download a KML super-overlay of (.
         int databaseId = wfsCall.result.features[0].properties.id
 
         // Fetch KML
-        URL superOverlayUrl = new URL("https://omar-dev.ossim.io/omar-superoverlay/superOverlay/createKml/$databaseId")
+        URL superOverlayUrl = new URL("${superOverlayService}/createKml/$databaseId")
         httpResponse = superOverlayUrl.text
 
         // Make sure the call was made without error
