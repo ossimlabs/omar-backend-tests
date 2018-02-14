@@ -63,11 +63,6 @@ images = [
             geotiff: [ "04DEC11050020-P2AS_R1C1-000000185964_01_P001" ]
         ]
     ],
-    rapideye: [
-        msi: [
-            geotiff: [ "2010-12-05T221358_RE2_3A-NAC_6683383_113276" ]
-        ]
-    ],
     "terrasar-x": [
         sar: [
             nitf20: [ "14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG" ]

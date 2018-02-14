@@ -18,7 +18,7 @@ File wmtsReturnImage
 def wmtsLayers
 def wmtsGetCapabilitiesReturn
 def wmtsTiles
-def wmtsValidationTile = "WMTS_verification_images/wmtsValidationImage_WorldGeographic_2010-12-05T221358_RE2_3A-NAC_6683383_113276"
+def wmtsValidationTile = "WMTS_verification_images/wmtsValidationImage_WorldGeographic_14SEP12113301-M1BS-053951940020_01_P001"
 def error = false
 
 config = CucumberConfig.config
@@ -64,6 +64,7 @@ When(~/^a call is made to WMTS for a (.*) image the for the entire bounding box 
         HashMap wmtsParams = setWFSIntersectionInfo(wfsCall, 0)
 
         wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds)
+        println wmtsTiles.url
         wmtsReturnImage = File.createTempFile("tempImageWMTS1", ".${imageType}")
         FileUtils.copyURLToFile(wmtsTiles.url, wmtsReturnImage)
 }
@@ -120,6 +121,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds)
         wmtsReturnImage = File.createTempFile("tempImageWMTS1", ".${imageType}")
+        println wmtsTiles.url
         FileUtils.copyURLToFile(wmtsTiles.url, wmtsReturnImage)
 }
 
