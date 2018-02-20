@@ -246,56 +246,18 @@ void downloadImageZipFile(String zipFileName, String fileInfo) {
     command.execute().waitFor()
 }
 
-// Used #7
-//When(~/^we download a local hsi envi image$/) { ->
-//
-//    // Setup filter for file name
-//    String filename = config.images.local.hsi.envi
-//    def filter = "filename = '${filename}'"
-//
-//    // Find WFS features using filter
-//    println "Finding file with filter ${filter}"
-//    def wfsQuery = new WFSCall(wfsServer, filter, "JSON", 1)
-//    def features = wfsQuery.result.features
-//
-//    // Use stagingService to find files for the feature id
-//    println "DOWNLOADING FILES FOR filename = ${filename}"
-//    // get all the supporting files
-//    def rasterFilesUrl = stagingService + "/getRasterFiles?id=${features[0].properties.id}"
-//    def rasterFilesText = new URL(rasterFilesUrl).getText()
-//    def rasterFiles = new JsonSlurper().parseText(rasterFilesText).results
-//
-//    // Formulate the post data for posting to the download service
-//    File zipFilename = "localHsiEnvi.zip" as File
-//    def map = [
-//            type          : "Download",
-//            zipFileName   : zipFilename.toString(),
-//            archiveOptions: [type: "zip"],
-//            fileGroups    : [
-//                    [
-//                            rootDirectory: "",
-//                            files        : rasterFiles
-//                    ]
-//            ]
-//    ]
-//    def jsonPost = JsonOutput.toJson(map)
-//
-//    // Download the file using the download service
-//    def command = ["curl", "-L", "-o", "${zipFilename}", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
-//    println command
-//    def process = command.execute()
-//    process.waitFor()
-//
-//    assert zipFilename.exists()
-//}
-
-Then(~/^A zip file of (.*) (.*) (.*) (.*) image should exist$/) { ->
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
+    String index, String platform, String sensor, String format ->
+        String imageId = getImageId(index, format, platform, sensor)
+        String zipFileName = "${imageId}.zip"
+        File zipFile = new File(zipFileName)
+        assert zipFile.exists()
+        println "Zip file: $zipFile"
+}
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should not be empty/) { ->
 
 }
-Then(~/^A zip file of (.*) (.*) (.*) (.*) image should not be empty/) { ->
-
-}
-Then(~/^A zip file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
 
 }
 
