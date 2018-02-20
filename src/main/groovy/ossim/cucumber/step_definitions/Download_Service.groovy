@@ -205,25 +205,25 @@ When(~/^we download (.*) (.*) (.*) (.*) image$/) {
         assert (zipFileName as File).exists()
 }
 
-static def fetchWfsFeaturesForImageId(String imageId) {
+def fetchWfsFeaturesForImageId(String imageId) {
     String geoscriptFilter = "filename LIKE '%${imageId}%'"
     def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
     return wfsQuery.result.features
 }
 
-static def fetchWfsFeaturesForFileName(String fileName) {
+def fetchWfsFeaturesForFileName(String fileName) {
     String geoscriptFilter = "filename = $fileName"
     def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
     return wfsQuery.result.features
 }
 
-static def fetchSupportingFilesForFeature(def feature) {
+def fetchSupportingFilesForFeature(def feature) {
     def rasterFilesUrl = config.stagingService + "/getRasterFiles?id=${feature.properties.id}"
     def rasterFilesText = new URL(rasterFilesUrl).getText()
     return new JsonSlurper().parseText(rasterFilesText).results
 }
 
-static String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
+String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
     File zipFile = zipFileName as File
     return JsonOutput.toJson([
             type          : "Download",
@@ -238,7 +238,7 @@ static String getPostDataForDownloadRequest(String zipFileName, String rasterFil
     ])
 }
 
-static downloadImageZipFile(String zipFileName, String fileInfo) {
+void downloadImageZipFile(String zipFileName, String fileInfo) {
     def command = ["curl", "-L", "-o", "${zipFileName}",
                    "-d", "fileInfo=${URLEncoder.encode(fileInfo, Charset.defaultCharset().displayName())}",
                    "${config.downloadService}/archive/download"]
