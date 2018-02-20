@@ -37,3 +37,15 @@ Feature: DownloadService
     Given that the download service is running
     When we download a local hsi envi image
     Then the hsi should contain the proper files
+
+  Scenario Outline: Calling Download Service for image
+    Given that the download service is running
+    When we download <index> <platform> <sensor> <format> image
+    Then a zip file of <index> <platform> <sensor> <format> image should exist
+    Examples:
+      | index | platform   | sensor | format  |
+      | a     | quickbird  | msi    | geotiff |
+      | a     | worldview2 | pan    | nitf20  |
+      | a     | terrasar-x | sar    | nitf20  |
+      | a     | local      | hsi    | envi    |
+      | another     | local      | hsi    | envi    |

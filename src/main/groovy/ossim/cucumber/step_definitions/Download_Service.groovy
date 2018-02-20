@@ -22,27 +22,24 @@ def stagingService = config.stagingService
 def wfsServer = config.wfsServerProperty
 
 
-def getImageId(format, index, platform, sensor) {
+String getImageId(String index = "a", String format, String platform, String sensor) {
     format = format.toLowerCase()
     platform = platform.toLowerCase()
     sensor = sensor.toLowerCase()
-
-
     return config.images[platform][sensor][format][index == "another" ? 1 : 0]
 }
 
+// Used 4
 Given(~/^that the download service is running$/) { ->
     def healthText = new URL("${downloadService}/health").text
     def healthJson = new JsonSlurper().parseText(healthText)
-
-
     assert healthJson.status == "UP"
 }
 
+// Commented out #1
 Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/) {
     String index, String platform, String sensor, String format ->
-
-        def imageId = getImageId(format, index, platform, sensor)
+        def imageId = getImageId(index, format, platform, sensor)
 
         def filter = "filename LIKE '%${imageId}%'"
         def wfsQuery = new WFSCall(wfsServer, filter, "JSON", 1)
@@ -74,6 +71,7 @@ Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/
         assert true
 }
 
+// Used 3
 Then(~/^the response should return a status of (\d+) and a message of "(.*)"$/) { int statusCode, String message ->
     println httpResponse
 
@@ -81,10 +79,11 @@ Then(~/^the response should return a status of (\d+) and a message of "(.*)"$/) 
     assert httpResponse.status == statusCode && httpResponse.message == message
 }
 
+// Commented out 3
 When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as a zip file$/) {
     String index, String platform, String sensor, String format ->
 
-        def imageId = getImageId(format, index, platform, sensor)
+        def imageId = getImageId(index, format, platform, sensor)
 
         def filter = "filename LIKE '%${imageId}%'"
         def wfsQuery = new WFSCall(wfsServer, filter, "JSON", 1)
@@ -128,6 +127,7 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
         assert new File("${imageId}.zip").exists()
 }
 
+// Used #5
 When(~/^the download service is called with no fileGroups specified in the json$/) { ->
     def map = [
             type          : "Download",
@@ -161,6 +161,7 @@ When(~/^the download service is called with no fileGroups specified in the json$
     assert httpResponse != null
 }
 
+// Used #6
 When(~/^the download service is called with the wrong archive type$/) { ->
     def map = [
             type          : "Download",
@@ -199,6 +200,7 @@ When(~/^the download service is called with the wrong archive type$/) { ->
     assert httpResponse != null
 }
 
+// Used #4
 When(~/^the download service is called without a json message$/) { ->
     def command = ["curl", "-L", "-d", "fileInfo=", "${downloadService}/archive/download"]
     /*
@@ -223,25 +225,42 @@ When(~/^the download service is called without a json message$/) { ->
     assert httpResponse != null
 }
 
-When(~/^we download a local hsi envi image$/) { ->
+When(~/^we download (.*) (.*) (.*) (.*) image$/) {
+    String index, String platform, String sensor, String format ->
+        println "we download image: $index $platform $sensor $format"
+        def imageId = getImageId(index, format, platform, sensor)
+        assert imageId != null && imageId != "/"
+        def zipFileName = "${imageId}.zip"
+        def feature = fetchWfsFeaturesForImageId(imageId)
+        String rasterFiles = fetchSupportingFilesForFeature(feature)
+        def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
+        downloadImageZipFile(zipFileName, downloadRequestOptions)
+        assert (zipFileName as File).exists()
+}
 
-    String filename = config.images.local.hsi.envi
-    def filter = "filename = '${filename}'"
-    println "Finding file with filter ${filter}"
-    def wfsQuery = new WFSCall(wfsServer, filter, "JSON", 1)
-    def features = wfsQuery.result.features
+def fetchWfsFeaturesForImageId(String imageId) {
+    String geoscriptFilter = "filename LIKE '${imageId}'"
+    def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
+    return wfsQuery.result.features
+}
 
-    println "DOWNLOADING FILES FOR filename = ${filename}"
-    // get all the supporting files
-    def rasterFilesUrl = stagingService + "/getRasterFiles?id=${features[0].properties.id}"
+def fetchWfsFeaturesForFileName(String fileName) {
+    String geoscriptFilter = "filename = $fileName"
+    def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
+    return wfsQuery.result.features
+}
+
+def fetchSupportingFilesForFeature(def feature) {
+    def rasterFilesUrl = config.stagingService + "/getRasterFiles?id=${feature.properties.id}"
     def rasterFilesText = new URL(rasterFilesUrl).getText()
-    def rasterFiles = new JsonSlurper().parseText(rasterFilesText).results
+    return new JsonSlurper().parseText(rasterFilesText).results
+}
 
-    // formulate the post data
-    File zipFilename = "localHsiEnvi.zip" as File
-    def map = [
+String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
+    File zipFile = zipFileName as File
+    return JsonOutput.toJson([
             type          : "Download",
-            zipFileName   : zipFilename.toString(),
+            zipFileName   : zipFile.toString(),
             archiveOptions: [type: "zip"],
             fileGroups    : [
                     [
@@ -249,11 +268,14 @@ When(~/^we download a local hsi envi image$/) { ->
                             files        : rasterFiles
                     ]
             ]
-    ]
-    def jsonPost = JsonOutput.toJson(map)
+    ])
+}
 
-    // download the file
-    def command = ["curl", "-L", "-o", "${zipFilename}", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
+// download the file
+void downloadImageZipFile(String zipFileName, String fileInfo) {
+    def command = ["curl", "-L", "-o", "${zipFileName}",
+                   "-d", "fileInfo=${URLEncoder.encode(fileInfo, Charset.defaultCharset().displayName())}",
+                   "${config.downloadService}/archive/download"]
     /*
     add an ArrayList called curlOptions to the config file if
     addition info needs to be added to the curl command.
@@ -263,16 +285,30 @@ When(~/^we download a local hsi envi image$/) { ->
     command.addAll(1, config.curlOptions)
     }
     println command
-    def process = command.execute()
-    process.waitFor()
+    command.execute().waitFor()
+}
 
-    assert zipFilename.exists() == true
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
+    String index, String platform, String sensor, String format ->
+        String imageId = getImageId(index, format, platform, sensor)
+        assert imageId != null && imageId != "/"
+        String zipFileName = "${imageId}.zip"
+        File zipFile = new File(zipFileName)
+        assert zipFile.exists()
+        println "Zip file: $zipFile"
+}
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should not be empty/) { ->
 
 }
+Then(~/^a zip file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
+
+}
+
+// Used #7
 Then(~/^the hsi should contain the proper files$/) { ->
 
 //    ZipInputStream in
-    File file = new File("localHsiEnvi.zip")
+    File file = new File("/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi.zip")
     Boolean foundHsi = false;
     Boolean foundHdr = false;
     if (file.exists()) {
