@@ -46,4 +46,4 @@ Feature: DownloadService
       | index | platform   | sensor | format  |
       | a     | quickbird  | msi    | geotiff |
       | a     | worldview2 | pan    | nitf20  |
-      | another     | local      | hsi    | envi    |
+      | a     | local      | hsi    | envi    |
