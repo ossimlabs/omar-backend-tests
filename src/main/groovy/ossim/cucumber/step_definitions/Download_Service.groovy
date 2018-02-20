@@ -207,7 +207,7 @@ When(~/^we download (.*) (.*) (.*) (.*) image$/) {
 }
 
 def fetchWfsFeaturesForImageId(String imageId) {
-    String geoscriptFilter = "filename LIKE '%${imageId}%'"
+    String geoscriptFilter = "filename LIKE '${imageId}'"
     def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
     return wfsQuery.result.features
 }
