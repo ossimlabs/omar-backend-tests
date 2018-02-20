@@ -47,3 +47,4 @@ Feature: DownloadService
       | a     | quickbird  | msi    | geotiff |
       | a     | worldview2 | pan    | nitf20  |
       | a     | local      | hsi    | envi    |
+      | another     | local      | hsi    | envi    |

@@ -39,7 +39,6 @@ Given(~/^that the download service is running$/) { ->
 // Commented out #1
 Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/) {
     String index, String platform, String sensor, String format ->
-
         def imageId = getImageId(index, format, platform, sensor)
 
         def filter = "filename LIKE '%${imageId}%'"
@@ -196,6 +195,7 @@ When(~/^the download service is called without a json message$/) { ->
 
 When(~/^we download (.*) (.*) (.*) (.*) image$/) {
     String index, String platform, String sensor, String format ->
+        println "we download image: $index $platform $sensor $format"
         def imageId = getImageId(index, format, platform, sensor)
         assert imageId != null && imageId != "/"
         def zipFileName = "${imageId}.zip"
