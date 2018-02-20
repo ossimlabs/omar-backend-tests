@@ -61,6 +61,14 @@ When(~/^the mensuration service is called with two points on (.*) (.*) (.*) (.*)
                        "Content-Type: application/json",
                        "${mensaUrl}/mensa/imageDistance"
         ]
+        /*
+        add an ArrayList called curlOptions to the config file if
+        addition info needs to be added to the curl command.
+        */
+        if (config?.curlOptions)
+        {
+        command.addAll(1, config.curlOptions)
+        }
         def process = command.execute()
         process.waitFor()
         def text = process.getText()
@@ -94,6 +102,14 @@ When(~/^the mensuration service is called with four points on (.*) (.*) (.*) (.*
                        "Content-Type: application/json",
                        "${mensaUrl}/mensa/imageDistance"
         ]
+        /*
+        add an ArrayList called curlOptions to the config file if
+        addition info needs to be added to the curl command.
+        */
+        if (config?.curlOptions)
+        {
+        command.addAll(1, config.curlOptions)
+        }
         def process = command.execute()
         process.waitFor()
         def text = process.getText()
@@ -127,6 +143,14 @@ When(~/^the mensuration service is called with a polygon of nine points on (.*) 
                        "Content-Type: application/json",
                        "${mensaUrl}/mensa/imageDistance"
         ]
+        /*
+        add an ArrayList called curlOptions to the config file if
+        addition info needs to be added to the curl command.
+        */
+        if (config?.curlOptions)
+        {
+        command.addAll(1, config.curlOptions)
+        }
         def process = command.execute()
         process.waitFor()
         def text = process.getText()
