@@ -43,6 +43,7 @@ Feature: DownloadService
     When we download <index> <platform> <sensor> <format> image
     Then a zip file of <index> <platform> <sensor> <format> image should exist
     Examples:
-      | index | platform  | sensor | format  |
-      | a     | quickbird | msi    | geotiff |
-      | a     | local     | hsi    | envi    |
+      | index | platform   | sensor | format  |
+      | a     | quickbird  | msi    | geotiff |
+      | a     | worldview2 | pan    | nitf20  |
+      | a     | local      | hsi    | envi    |
