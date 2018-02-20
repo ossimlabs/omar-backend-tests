@@ -83,7 +83,8 @@ images = [
     local: [
             hsi:[
                     envi: [ "/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi" ]
-            ]
+            ],
+            foo:[bar:[""]]
     ],
     remote: [
         quickbirdpan: [
