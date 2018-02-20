@@ -194,16 +194,16 @@ When(~/^the download service is called without a json message$/) { ->
     assert httpResponse != null
 }
 
-When(~/^we download (.*) (.*) (.*) (.*) image$/) {
-    String index, String platform, String sensor, String format ->
-        def imageId = getImageId(index, format, platform, sensor)
-        def zipFileName = "${imageId}.zip"
-        def feature = fetchWfsFeaturesForImageId(imageId)
-        String rasterFiles = fetchSupportingFilesForFeature(feature)
-        def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
-        downloadImageZipFile(zipFileName, downloadRequestOptions)
-        assert (zipFileName as File).exists()
-}
+//When(~/^we download (.*) (.*) (.*) (.*) image$/) {
+//    String index, String platform, String sensor, String format ->
+//        def imageId = getImageId(index, format, platform, sensor)
+//        def zipFileName = "${imageId}.zip"
+//        def feature = fetchWfsFeaturesForImageId(imageId)
+//        String rasterFiles = fetchSupportingFilesForFeature(feature)
+//        def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
+//        downloadImageZipFile(zipFileName, downloadRequestOptions)
+//        assert (zipFileName as File).exists()
+//}
 
 def fetchWfsFeaturesForImageId(String imageId) {
     String geoscriptFilter = "filename LIKE '%${imageId}%'"
