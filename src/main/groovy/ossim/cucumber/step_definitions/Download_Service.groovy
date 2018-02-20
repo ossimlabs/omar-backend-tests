@@ -112,6 +112,14 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
 
         // download the file
         def command = ["curl", "-L", "-o", "${filename}", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
+        /*
+        add an ArrayList called curlOptions to the config file if
+        addition info needs to be added to the curl command.
+        */
+        if (config?.curlOptions)
+        {
+        command.addAll(1, config.curlOptions)
+        }
         println command
         def process = command.execute()
         process.waitFor()
@@ -130,6 +138,14 @@ When(~/^the download service is called with no fileGroups specified in the json$
     def jsonPost = JsonOutput.toJson(map)
 
     def command = ["curl", "-L", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
+    /*
+    add an ArrayList called curlOptions to the config file if
+    addition info needs to be added to the curl command.
+    */
+    if (config?.curlOptions)
+    {
+    command.addAll(1, config.curlOptions)
+    }
     println command
 
     def stdOut = new StringBuilder()
@@ -160,6 +176,14 @@ When(~/^the download service is called with the wrong archive type$/) { ->
     def jsonPost = JsonOutput.toJson(map)
 
     def command = ["curl", "-L", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
+    /*
+    add an ArrayList called curlOptions to the config file if
+    addition info needs to be added to the curl command.
+    */
+    if (config?.curlOptions)
+    {
+    command.addAll(1, config.curlOptions)
+    }
     println command
 
     def stdOut = new StringBuilder()
@@ -177,6 +201,14 @@ When(~/^the download service is called with the wrong archive type$/) { ->
 
 When(~/^the download service is called without a json message$/) { ->
     def command = ["curl", "-L", "-d", "fileInfo=", "${downloadService}/archive/download"]
+    /*
+    add an ArrayList called curlOptions to the config file if
+    addition info needs to be added to the curl command.
+    */
+    if (config?.curlOptions)
+    {
+    command.addAll(1, config.curlOptions)
+    }
     println command
 
     def stdOut = new StringBuilder()
@@ -222,6 +254,14 @@ When(~/^we download a local hsi envi image$/) { ->
 
     // download the file
     def command = ["curl", "-L", "-o", "${zipFilename}", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
+    /*
+    add an ArrayList called curlOptions to the config file if
+    addition info needs to be added to the curl command.
+    */
+    if (config?.curlOptions)
+    {
+    command.addAll(1, config.curlOptions)
+    }
     println command
     def process = command.execute()
     process.waitFor()
