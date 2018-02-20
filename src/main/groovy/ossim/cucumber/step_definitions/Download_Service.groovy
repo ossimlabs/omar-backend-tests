@@ -197,7 +197,7 @@ When(~/^the download service is called without a json message$/) { ->
 When(~/^we download (.*) (.*) (.*) (.*) image$/) {
     String index, String platform, String sensor, String format ->
         def imageId = getImageId(index, format, platform, sensor)
-        assert imageId != null && !imageId.isEmpty()
+        assert imageId != null && imageId != "/"
         def zipFileName = "${imageId}.zip"
         def feature = fetchWfsFeaturesForImageId(imageId)
         String rasterFiles = fetchSupportingFilesForFeature(feature)
@@ -250,7 +250,7 @@ void downloadImageZipFile(String zipFileName, String fileInfo) {
 Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
     String index, String platform, String sensor, String format ->
         String imageId = getImageId(index, format, platform, sensor)
-        assert imageId != null && !imageId.isEmpty()
+        assert imageId != null && imageId != "/"
         String zipFileName = "${imageId}.zip"
         File zipFile = new File(zipFileName)
         assert zipFile.exists()

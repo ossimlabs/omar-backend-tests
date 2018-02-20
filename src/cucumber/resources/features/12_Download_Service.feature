@@ -45,3 +45,4 @@ Feature: DownloadService
     Examples:
       | index | platform  | sensor | format  |
       | a     | quickbird | msi    | geotiff |
+      | a     | local     | hsi    | envi    |
