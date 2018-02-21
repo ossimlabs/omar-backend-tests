@@ -196,10 +196,10 @@ When(~/^the download service is called without a json message$/) { ->
 When(~/^we download (.*) (.*) (.*) (.*) image$/) {
     String index, String platform, String sensor, String format ->
         println "we download image: $index $platform $sensor $format"
-        def imageId = getImageId(index, format, platform, sensor)
-        assert imageId != null && imageId != "/"
-        def zipFileName = "${imageId}.zip"
-        def feature = fetchWfsFeaturesForImageId(imageId)
+        def imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        assert imageFileName != null && imageFileName != "/"
+        def zipFileName = imageFileName + ".zip"
+        def feature = fetchWfsFeaturesForImageId(imageFileName)
         String rasterFiles = fetchSupportingFilesForFeature(feature)
         def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
         downloadImageZipFile(zipFileName, downloadRequestOptions)
@@ -243,7 +243,7 @@ List<String> curlDownloadCommand(String fileName = null, String fileInfo = null)
             "${config.downloadService}/archive/download"]
 
     // Callers may want to output to stdout.
-    if (fileName != null) command.addAll(1, ["-o", "${fileName}"])
+    if (fileName != null) command.addAll(1, ["-o", "${validFileName(fileName)}"])
 
     // An empty string for 'fileInfo' is invalid but is used in tests.
     if (fileInfo != null) command.addAll(1,
@@ -255,18 +255,26 @@ List<String> curlDownloadCommand(String fileName = null, String fileInfo = null)
     return command
 }
 
-// download the file
+String validFileName(String imageId) {
+    return imageId.replace('/', '_').replace('\\', '_')
+}
+
 void downloadImageZipFile(String zipFileName, String fileInfo) {
     def command = curlDownloadCommand(zipFileName, fileInfo)
     println command
-    command.execute().waitFor()
+
+    def stdOut = new StringBuilder()
+    def stdErr = new StringBuilder()
+    def process = command.execute()
+    process.consumeProcessOutput(stdOut, stdErr)
+    process.waitFor()
 }
 
 Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
     String index, String platform, String sensor, String format ->
-        String imageId = getImageId(index, format, platform, sensor)
-        assert imageId != null && imageId != "/"
-        String zipFileName = imageId + ".zip"
+        String imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        assert imageFileName != null && imageFileName != "/"
+        String zipFileName = imageFileName + ".zip"
         File zipFile = new File(zipFileName)
         assert zipFile.exists()
         println "Zip file: $zipFile"
