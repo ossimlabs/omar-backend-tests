@@ -203,7 +203,6 @@ When(~/^we download (.*) (.*) (.*) (.*) image$/) {
         String rasterFiles = fetchSupportingFilesForFeature(feature)
         def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
         downloadImageZipFile(zipFileName, downloadRequestOptions)
-        assert (zipFileName as File).exists()
 }
 
 def fetchWfsFeaturesForImageId(String imageId) {
@@ -263,13 +262,11 @@ void downloadImageZipFile(String zipFileName, String fileInfo) {
     command.execute().waitFor()
 }
 
-List<String> curl
-
 Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
     String index, String platform, String sensor, String format ->
         String imageId = getImageId(index, format, platform, sensor)
         assert imageId != null && imageId != "/"
-        String zipFileName = "${imageId}.zip"
+        String zipFileName = imageId + ".zip"
         File zipFile = new File(zipFileName)
         assert zipFile.exists()
         println "Zip file: $zipFile"
@@ -281,29 +278,29 @@ Then(~/^a zip file of (.*) (.*) (.*) (.*) image should contain image files/) { -
 
 }
 
-// Used #7
-Then(~/^the hsi should contain the proper files$/) { ->
-
-//    ZipInputStream in
-    File file = new File("/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi.zip")
-    Boolean foundHsi = false;
-    Boolean foundHdr = false;
-    if (file.exists()) {
-        FileInputStream input = new FileInputStream(file);
-        ZipInputStream zip = new ZipInputStream(input);
-        ZipEntry entry;
-        while ((entry = zip.nextEntry) != null) {
-            String name = entry.name
-            if (name.endsWith(".hsi")) {
-                foundHsi = true
-            } else if (name.endsWith("hsi.hdr")) {
-                foundHdr = true
-            }
-        }
-
-        zip.close();
-        input.close()
-    }
-
-    assert ((foundHsi && foundHdr) == true)
-}
+//// Used #7
+//Then(~/^the hsi should contain the proper files$/) { ->
+//
+////    ZipInputStream in
+//    File file = new File("/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi.zip")
+//    Boolean foundHsi = false;
+//    Boolean foundHdr = false;
+//    if (file.exists()) {
+//        FileInputStream input = new FileInputStream(file);
+//        ZipInputStream zip = new ZipInputStream(input);
+//        ZipEntry entry;
+//        while ((entry = zip.nextEntry) != null) {
+//            String name = entry.name
+//            if (name.endsWith(".hsi")) {
+//                foundHsi = true
+//            } else if (name.endsWith("hsi.hdr")) {
+//                foundHdr = true
+//            }
+//        }
+//
+//        zip.close();
+//        input.close()
+//    }
+//
+//    assert ((foundHsi && foundHdr) == true)
+//}
