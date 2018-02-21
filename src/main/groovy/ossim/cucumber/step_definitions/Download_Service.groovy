@@ -110,6 +110,7 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
         def jsonPost = JsonOutput.toJson(map)
 
         // download the file
+//        def command = curlDownloadCommand(filename, jsonPost)
         def command = ["curl", "-L", "-o", "${filename}", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
         /*
         add an ArrayList called curlOptions to the config file if
@@ -137,6 +138,7 @@ When(~/^the download service is called with no fileGroups specified in the json$
     ]
     def jsonPost = JsonOutput.toJson(map)
 
+//    def command = curlDownloadCommand(null, jsonPost)
     def command = ["curl", "-L", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
     /*
     add an ArrayList called curlOptions to the config file if
@@ -176,6 +178,7 @@ When(~/^the download service is called with the wrong archive type$/) { ->
     ]
     def jsonPost = JsonOutput.toJson(map)
 
+//    def command = curlDownloadCommand(null, jsonPost)
     def command = ["curl", "-L", "-d", "fileInfo=${URLEncoder.encode(jsonPost, defaultCharset)}", "${downloadService}/archive/download"]
     /*
     add an ArrayList called curlOptions to the config file if
@@ -202,6 +205,7 @@ When(~/^the download service is called with the wrong archive type$/) { ->
 
 // Used #4
 When(~/^the download service is called without a json message$/) { ->
+//    def command = curlDownloadCommand(null, "")
     def command = ["curl", "-L", "-d", "fileInfo=", "${downloadService}/archive/download"]
     /*
     add an ArrayList called curlOptions to the config file if
@@ -271,8 +275,26 @@ String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
     ])
 }
 
+List<String> curlDownloadCommand(String fileName = null, String fileInfo = null) {
+    List<String> command = ["curl", "-L",
+            "${config.downloadService}/archive/download"]
+
+    // Callers may want to output to stdout.
+    if (fileName != null) command.addAll(2, ["-o", "${fileName}"])
+
+    // An empty string for 'fileInfo' is invalid but is used in tests.
+    if (fileInfo != null) command.addAll(4,
+            ["-d", "fileInfo=${URLEncoder.encode(fileInfo, Charset.defaultCharset().displayName())}"]
+    )
+
+    // Necessary to optionally support authentication
+    if (config.curlOptions) command.addAll(1, config.curlOptions)
+    return command
+}
+
 // download the file
 void downloadImageZipFile(String zipFileName, String fileInfo) {
+//    def command = curlDownloadCommand(zipFileName, fileInfo)
     def command = ["curl", "-L", "-o", "${zipFileName}",
                    "-d", "fileInfo=${URLEncoder.encode(fileInfo, Charset.defaultCharset().displayName())}",
                    "${config.downloadService}/archive/download"]
@@ -287,6 +309,8 @@ void downloadImageZipFile(String zipFileName, String fileInfo) {
     println command
     command.execute().waitFor()
 }
+
+List<String> curl
 
 Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
     String index, String platform, String sensor, String format ->
