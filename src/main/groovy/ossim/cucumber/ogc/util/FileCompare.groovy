@@ -6,11 +6,12 @@ class FileCompare
 {
     FileCompare() {}
 
-    static boolean checkImages(filePath1, filePath2, image_type)
+    static boolean checkImages(filePath1, filePath2, image_type = null)
     {
         boolean imagesEqual
-        File file1 = File.createTempFile("tempImage1", ".${image_type}")
-        File file2 = File.createTempFile("tempImage2", ".${image_type}")
+        String suffix = image_type ? ".${image_type}" : ""
+        File file1 = File.createTempFile("tempImage1", suffix)
+        File file2 = File.createTempFile("tempImage2", suffix)
 
         FileUtils.copyURLToFile(filePath1, file1)
         FileUtils.copyURLToFile(filePath2, file2)

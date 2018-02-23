@@ -3,11 +3,10 @@ package ossim.cucumber.step_definitions
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import ossim.cucumber.config.CucumberConfig
+import ossim.cucumber.ogc.util.FileCompare
 import ossim.cucumber.ogc.wfs.WFSCall
 
 import java.nio.charset.Charset
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
@@ -20,7 +19,8 @@ config = CucumberConfig.config
 def downloadService = config.downloadService
 def stagingService = config.stagingService
 def wfsServer = config.wfsServerProperty
-
+def s3Bucket = config.s3Bucket
+def s3BucketUrl = config.s3BucketUrl
 
 String getImageId(String index = "a", String format, String platform, String sensor) {
     format = format.toLowerCase()
@@ -29,14 +29,24 @@ String getImageId(String index = "a", String format, String platform, String sen
     return config.images[platform][sensor][format][index == "another" ? 1 : 0]
 }
 
-// Used 4
 Given(~/^that the download service is running$/) { ->
     def healthText = new URL("${downloadService}/health").text
     def healthJson = new JsonSlurper().parseText(healthText)
     assert healthJson.status == "UP"
 }
 
-// Commented out #1
+When(~/^we download (.*) (.*) (.*) (.*) image$/) {
+    String index, String platform, String sensor, String format ->
+        println "we download image: $index $platform $sensor $format"
+        def imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        assert imageFileName != null && imageFileName != "/"
+        def feature = fetchWfsFeaturesForImageId(imageFileName)
+        assert feature != null
+        String rasterFiles = fetchSupportingFilesForFeature(feature)
+        def downloadRequestOptions = getPostDataForDownloadRequest(imageFileName, rasterFiles)
+        downloadImageFile(imageFileName, downloadRequestOptions)
+}
+
 Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/) {
     String index, String platform, String sensor, String format ->
         def imageId = getImageId(index, format, platform, sensor)
@@ -49,7 +59,7 @@ Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/
         def rasterFilesText = new URL(rasterFilesUrl).getText()
         def rasterFiles = new JsonSlurper().parseText(rasterFilesText).results
 
-        def zipFile = new File("${imageId}.zip")
+        def zipFile = new File("${imageId}")
         if (zipFile.exists()) {
             def command = "unzip -l ${zipFile}"
             def process = command.execute()
@@ -66,12 +76,11 @@ Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/
         }
 
         // clean up
-        "rm -f ${imageId}.zip".execute()
+        "rm -f ${imageId}".execute()
 
         assert true
 }
 
-// Used 3
 Then(~/^the response should return a status of (\d+) and a message of "(.*)"$/) { int statusCode, String message ->
     println httpResponse
 
@@ -79,7 +88,6 @@ Then(~/^the response should return a status of (\d+) and a message of "(.*)"$/) 
     assert httpResponse.status == statusCode && httpResponse.message == message
 }
 
-// Commented out 3
 When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as a zip file$/) {
     String index, String platform, String sensor, String format ->
 
@@ -95,7 +103,7 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
         def rasterFiles = new JsonSlurper().parseText(rasterFilesText).results
 
         // formulate the post data
-        def filename = "${imageId}.zip"
+        def filename = "${imageId}"
         def map = [
                 type          : "Download",
                 zipFileName   : filename,
@@ -116,10 +124,9 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
         process.waitFor()
 
 
-        assert new File("${imageId}.zip").exists()
+        assert new File("${imageId}").exists()
 }
 
-// Used #5
 When(~/^the download service is called with no fileGroups specified in the json$/) { ->
     def map = [
             type          : "Download",
@@ -145,7 +152,6 @@ When(~/^the download service is called with no fileGroups specified in the json$
     assert httpResponse != null
 }
 
-// Used #6
 When(~/^the download service is called with the wrong archive type$/) { ->
     def map = [
             type          : "Download",
@@ -176,7 +182,6 @@ When(~/^the download service is called with the wrong archive type$/) { ->
     assert httpResponse != null
 }
 
-// Used #4
 When(~/^the download service is called without a json message$/) { ->
     def command = curlDownloadCommand(null, "")
     println command
@@ -193,20 +198,29 @@ When(~/^the download service is called without a json message$/) { ->
     assert httpResponse != null
 }
 
-When(~/^we download (.*) (.*) (.*) (.*) image$/) {
+Then(~/^a file of (.*) (.*) (.*) (.*) image should exist$/) {
     String index, String platform, String sensor, String format ->
-        println "we download image: $index $platform $sensor $format"
-        def imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        String imageFileName = validFileName(getImageId(index, format, platform, sensor))
         assert imageFileName != null && imageFileName != "/"
-        def zipFileName = imageFileName + ".zip"
-        def feature = fetchWfsFeaturesForImageId(imageFileName)
-        String rasterFiles = fetchSupportingFilesForFeature(feature)
-        def downloadRequestOptions = getPostDataForDownloadRequest(zipFileName, rasterFiles)
-        downloadImageZipFile(zipFileName, downloadRequestOptions)
+        File imageFile = new File(imageFileName)
+        assert imageFile.exists()
+        println "Image file: $imageFile"
+}
+
+Then(~/^a file of (.*) (.*) (.*) (.*) matches the validation of S3 file (.*)/) {
+    String index, String platform, String sensor, String format, String s3Path ->
+        def imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        URL verificationImageUrl = new URL("${s3BucketUrl}/$s3Path")
+        FileCompare fileComp = new FileCompare()
+        assert fileComp.checkImages(verificationImageUrl, imageFileName)
+}
+
+Then(~/^a file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
+
 }
 
 def fetchWfsFeaturesForImageId(String imageId) {
-    String geoscriptFilter = "filename LIKE '${imageId}'"
+    String geoscriptFilter = "filename LIKE '%${imageId}%'"
     def wfsQuery = new WFSCall(config.wfsServerProperty, geoscriptFilter, "JSON", 1)
     return wfsQuery.result.features
 }
@@ -218,16 +232,15 @@ def fetchWfsFeaturesForFileName(String fileName) {
 }
 
 def fetchSupportingFilesForFeature(def feature) {
-    def rasterFilesUrl = config.stagingService + "/getRasterFiles?id=${feature.properties.id}"
+    def rasterFilesUrl = config.stagingService + "/getRasterFiles?id=${feature["properties"]["id"][0]}"
     def rasterFilesText = new URL(rasterFilesUrl).getText()
     return new JsonSlurper().parseText(rasterFilesText).results
 }
 
-String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
-    File zipFile = zipFileName as File
+String getPostDataForDownloadRequest(String imageFileName, String rasterFiles) {
     return JsonOutput.toJson([
             type          : "Download",
-            zipFileName   : zipFile.toString(),
+            zipFileName   : imageFileName+".zip",
             archiveOptions: [type: "zip"],
             fileGroups    : [
                     [
@@ -239,8 +252,7 @@ String getPostDataForDownloadRequest(String zipFileName, String rasterFiles) {
 }
 
 List<String> curlDownloadCommand(String fileName = null, String fileInfo = null) {
-    List<String> command = ["curl", "-L",
-            "${config.downloadService}/archive/download"]
+    List<String> command = ["curl", "-L", "${config.downloadService}/archive/download"]
 
     // Callers may want to output to stdout.
     if (fileName != null) command.addAll(1, ["-o", "${validFileName(fileName)}"])
@@ -259,31 +271,14 @@ String validFileName(String imageId) {
     return imageId.replace('/', '_').replace('\\', '_')
 }
 
-void downloadImageZipFile(String zipFileName, String fileInfo) {
-    def command = curlDownloadCommand(zipFileName, fileInfo)
-    println command
+void downloadImageFile(String imageFileName, String fileInfo) {
+    def command = curlDownloadCommand(imageFileName, fileInfo)
 
     def stdOut = new StringBuilder()
     def stdErr = new StringBuilder()
     def process = command.execute()
     process.consumeProcessOutput(stdOut, stdErr)
     process.waitFor()
-}
-
-Then(~/^a zip file of (.*) (.*) (.*) (.*) image should exist$/) {
-    String index, String platform, String sensor, String format ->
-        String imageFileName = validFileName(getImageId(index, format, platform, sensor))
-        assert imageFileName != null && imageFileName != "/"
-        String zipFileName = imageFileName + ".zip"
-        File zipFile = new File(zipFileName)
-        assert zipFile.exists()
-        println "Zip file: $zipFile"
-}
-Then(~/^a zip file of (.*) (.*) (.*) (.*) image should not be empty/) { ->
-
-}
-Then(~/^a zip file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
-
 }
 
 //// Used #7
