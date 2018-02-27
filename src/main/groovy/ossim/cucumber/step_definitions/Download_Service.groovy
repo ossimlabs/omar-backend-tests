@@ -2,6 +2,7 @@ package ossim.cucumber.step_definitions
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.apache.commons.io.FileUtils
 import ossim.cucumber.config.CucumberConfig
 import ossim.cucumber.ogc.util.FileCompare
 import ossim.cucumber.ogc.wfs.WFSCall
@@ -19,7 +20,6 @@ config = CucumberConfig.config
 def downloadService = config.downloadService
 def stagingService = config.stagingService
 def wfsServer = config.wfsServerProperty
-def s3Bucket = config.s3Bucket
 def s3BucketUrl = config.s3BucketUrl
 
 String getImageId(String index = "a", String format, String platform, String sensor) {
@@ -82,9 +82,7 @@ Then(~/^(.*) (.*) (.*) (.*) image is downloaded along with supporting zip file$/
 }
 
 Then(~/^the response should return a status of (\d+) and a message of "(.*)"$/) { int statusCode, String message ->
-    println httpResponse
-
-
+    println "Response should have status $statusCode and message '$message': $httpResponse"
     assert httpResponse.status == statusCode && httpResponse.message == message
 }
 
@@ -119,7 +117,6 @@ When(~/^the download service is called to download (.*) (.*) (.*) (.*) image as 
 
         // download the file
         def command = curlDownloadCommand(filename, jsonPost)
-        println command
         def process = command.execute()
         process.waitFor()
 
@@ -137,14 +134,12 @@ When(~/^the download service is called with no fileGroups specified in the json$
     def jsonPost = JsonOutput.toJson(map)
 
     def command = curlDownloadCommand(null, jsonPost)
-    println command
 
     def stdOut = new StringBuilder()
     def stdError = new StringBuilder()
     def process = command.execute()
     process.consumeProcessOutput(stdOut, stdError)
     process.waitFor()
-    println stdOut.toString()
 
     httpResponse = new JsonSlurper().parseText(stdOut.toString())
 
@@ -167,14 +162,12 @@ When(~/^the download service is called with the wrong archive type$/) { ->
     def jsonPost = JsonOutput.toJson(map)
 
     def command = curlDownloadCommand(null, jsonPost)
-    println command
 
     def stdOut = new StringBuilder()
     def stdError = new StringBuilder()
     def process = command.execute()
     process.consumeProcessOutput(stdOut, stdError)
     process.waitFor()
-    println stdOut.toString()
 
     httpResponse = new JsonSlurper().parseText(stdOut.toString())
 
@@ -184,14 +177,12 @@ When(~/^the download service is called with the wrong archive type$/) { ->
 
 When(~/^the download service is called without a json message$/) { ->
     def command = curlDownloadCommand(null, "")
-    println command
 
     def stdOut = new StringBuilder()
     def stdError = new StringBuilder()
     def process = command.execute()
     process.consumeProcessOutput(stdOut, stdError)
     process.waitFor()
-    println stdOut.toString()
 
     httpResponse = new JsonSlurper().parseText(stdOut.toString())
 
@@ -207,12 +198,11 @@ Then(~/^a file of (.*) (.*) (.*) (.*) image should exist$/) {
         println "Image file: $imageFile"
 }
 
-Then(~/^a file of (.*) (.*) (.*) (.*) matches the validation of S3 file (.*)/) {
+Then(~/^a downloaded file of (.*) (.*) (.*) (.*) matches the validation of S3 file (.*)/) {
     String index, String platform, String sensor, String format, String s3Path ->
-        def imageFileName = validFileName(getImageId(index, format, platform, sensor))
+        String imageFileName = validFileName(getImageId(index, format, platform, sensor))
         URL verificationImageUrl = new URL("${s3BucketUrl}/$s3Path")
-        FileCompare fileComp = new FileCompare()
-        assert fileComp.checkImages(verificationImageUrl, imageFileName)
+        compareLocalImageToUrl(new File(imageFileName), verificationImageUrl)
 }
 
 Then(~/^a file of (.*) (.*) (.*) (.*) image should contain image files/) { ->
@@ -264,6 +254,7 @@ List<String> curlDownloadCommand(String fileName = null, String fileInfo = null)
 
     // Necessary to optionally support authentication
     if (config.curlOptions) command.addAll(1, config.curlOptions)
+    println "Using curl command: '${command.join(" ")}'"
     return command
 }
 
@@ -281,29 +272,14 @@ void downloadImageFile(String imageFileName, String fileInfo) {
     process.waitFor()
 }
 
-//// Used #7
-//Then(~/^the hsi should contain the proper files$/) { ->
-//
-////    ZipInputStream in
-//    File file = new File("/data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi.zip")
-//    Boolean foundHsi = false;
-//    Boolean foundHdr = false;
-//    if (file.exists()) {
-//        FileInputStream input = new FileInputStream(file);
-//        ZipInputStream zip = new ZipInputStream(input);
-//        ZipEntry entry;
-//        while ((entry = zip.nextEntry) != null) {
-//            String name = entry.name
-//            if (name.endsWith(".hsi")) {
-//                foundHsi = true
-//            } else if (name.endsWith("hsi.hdr")) {
-//                foundHdr = true
-//            }
-//        }
-//
-//        zip.close();
-//        input.close()
-//    }
-//
-//    assert ((foundHsi && foundHdr) == true)
-//}
+boolean compareLocalImageToUrl(File localImageFile, URL imageUrl, image_type = null) {
+    String suffix = image_type ? ".${image_type}" : ""
+    File imageUrlFile = File.createTempFile("tempImage", suffix)
+
+    FileUtils.copyURLToFile(imageUrl, imageUrlFile)
+
+    boolean imagesEqual = FileUtils.contentEquals(localImageFile, imageUrlFile)
+
+    imageUrlFile.deleteOnExit()
+    return imagesEqual
+}
