@@ -22,7 +22,7 @@ node {
             dir("${env.WORKSPACE}/omar-backend-tests"){
                sh """
 		aws s3 cp s3://${env.S3_CONFIG_FILE} ${env.WORKSPACE}/${env.S3_CONFIG_FILE}
-                ./gradlew backend
+                gradle backend
                 echo ""
                """
             }
