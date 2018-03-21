@@ -23,14 +23,16 @@ Given(~/the JPIP service is running/) { ->
 When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*) and project code (.*) with a (.*) millisecond timeout/) {
     String imagePath, String entry, String projCode, String timeoutStringMillis ->
         int timeoutInMillis = timeoutStringMillis.toInteger()
-        URL createStreamUrl = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode".toURL()
+        String jpipCall = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode"
+        println "Calling JPIP at: $jpipCall"
+        URL createStreamUrl = jpipCall.toURL()
         def jsonSlurper = new JsonSlurper()
 
         // Need to wait until the image has been processed.
         // The initial "READY" state turns to "FINISHED" when done.
+        println "Waiting on status FINISHED"
         assert waitForTrueOrTimeout(timeoutInMillis) {
             jpipResponse = jsonSlurper.parse(createStreamUrl)["status"]
-            println "Waiting on status FINISHED: $jpipResponse ..."
             jpipResponse == "FINISHED"
         }
 }
@@ -51,6 +53,7 @@ static Boolean waitForTrueOrTimeout(int timeInMillis, int intervalInMillis = 200
     def startTime = System.currentTimeMillis()
     while (System.currentTimeMillis() - startTime < timeInMillis) {
         if (closure()) return true
+        println " ... ${System.currentTimeMillis() - startTime} / $timeInMillis"
         sleep(intervalInMillis)
     }
     return false
