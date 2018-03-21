@@ -24,7 +24,7 @@ When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*)
     String imagePath, String entry, String projCode, String timeoutStringMillis ->
         int timeoutInMillis = timeoutStringMillis.toInteger()
         String jpipCall = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode"
-        println "Calling JPIP at: $jpipCall"
+        println "Testing JPIP at: $jpipCall"
         URL createStreamUrl = jpipCall.toURL()
         def jsonSlurper = new JsonSlurper()
 
@@ -51,9 +51,10 @@ Then(~/^the JPIP service returns a status of FINISHED without timing out/) { ->
  */
 static Boolean waitForTrueOrTimeout(int timeInMillis, int intervalInMillis = 200, Closure<Boolean> closure) {
     def startTime = System.currentTimeMillis()
+    println ""
     while (System.currentTimeMillis() - startTime < timeInMillis) {
         if (closure()) return true
-        println " ... ${System.currentTimeMillis() - startTime} / $timeInMillis"
+        print "\r ... ${System.currentTimeMillis() - startTime} / $timeInMillis"
         sleep(intervalInMillis)
     }
     return false
