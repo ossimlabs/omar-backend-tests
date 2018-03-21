@@ -31,7 +31,7 @@ When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*)
         // Need to wait until the image has been processed.
         // The initial "READY" state turns to "FINISHED" when done.
         println "Waiting on status FINISHED"
-        assert waitForTrueOrTimeout(timeoutInMillis) {
+        assert retryWithTimeout(timeoutInMillis) {
             jpipResponse = jsonSlurper.parse(createStreamUrl)["status"]
             jpipResponse == "FINISHED"
         }
@@ -49,12 +49,13 @@ Then(~/^the JPIP service returns a status of FINISHED without timing out/) { ->
  * @param closure A closure that returns a boolean
  * @return True if the closure returned true within the time limit
  */
-static Boolean waitForTrueOrTimeout(int timeInMillis, int intervalInMillis = 200, Closure<Boolean> closure) {
+static Boolean retryWithTimeout(int timeInMillis, int intervalInMillis = 200, Closure<Boolean> closure) {
     def startTime = System.currentTimeMillis()
-    println ""
-    while (System.currentTimeMillis() - startTime < timeInMillis) {
+    Closure<Long> getTimeDelta = { System.currentTimeMillis() - startTime }
+
+    while (getTimeDelta() < timeInMillis) {
         if (closure()) return true
-        print "\r ... ${System.currentTimeMillis() - startTime} / $timeInMillis"
+        println " ... ${getTimeDelta()} / $timeInMillis"
         sleep(intervalInMillis)
     }
     return false
