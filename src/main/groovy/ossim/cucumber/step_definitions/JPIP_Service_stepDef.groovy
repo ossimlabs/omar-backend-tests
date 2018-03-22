@@ -23,12 +23,15 @@ Given(~/the JPIP service is running/) { ->
 When(~/^a call is made to JPIP to create a stream of an image at (.*) entry (.*) and project code (.*) with a (.*) millisecond timeout/) {
     String imagePath, String entry, String projCode, String timeoutStringMillis ->
         int timeoutInMillis = timeoutStringMillis.toInteger()
-        URL createStreamUrl = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode".toURL()
+        String jpipCall = "$jpipService/createStream?filename=$imagePath&entry=$entry&projCode=$projCode"
+        println "Testing JPIP at: $jpipCall"
+        URL createStreamUrl = jpipCall.toURL()
         def jsonSlurper = new JsonSlurper()
 
         // Need to wait until the image has been processed.
         // The initial "READY" state turns to "FINISHED" when done.
-        assert waitForTrueOrTimeout(timeoutInMillis) {
+        println "Waiting on status FINISHED"
+        assert retryWithTimeout(timeoutInMillis) {
             jpipResponse = jsonSlurper.parse(createStreamUrl)["status"]
             jpipResponse == "FINISHED"
         }
@@ -46,10 +49,13 @@ Then(~/^the JPIP service returns a status of FINISHED without timing out/) { ->
  * @param closure A closure that returns a boolean
  * @return True if the closure returned true within the time limit
  */
-static Boolean waitForTrueOrTimeout(int timeInMillis, int intervalInMillis = 200, Closure<Boolean> closure) {
+static Boolean retryWithTimeout(int timeInMillis, int intervalInMillis = 200, Closure<Boolean> closure) {
     def startTime = System.currentTimeMillis()
-    while (System.currentTimeMillis() - startTime < timeInMillis) {
+    Closure<Long> getTimeDelta = { System.currentTimeMillis() - startTime }
+
+    while (getTimeDelta() < timeInMillis) {
         if (closure()) return true
+        println " ... ${getTimeDelta()} / $timeInMillis"
         sleep(intervalInMillis)
     }
     return false
