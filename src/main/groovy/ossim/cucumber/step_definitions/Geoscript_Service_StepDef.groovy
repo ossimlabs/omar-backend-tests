@@ -56,6 +56,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with a resultType (.*
         ]
 
         URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+        println "Query URL: ${geoscriptUrl}"
         gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
