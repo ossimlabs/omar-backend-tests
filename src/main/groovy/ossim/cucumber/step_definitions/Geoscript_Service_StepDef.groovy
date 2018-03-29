@@ -56,7 +56,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with a resultType (.*
         ]
 
         URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
-        println "Query URL: ${geoscriptUrl}"
+    println "Query URL: ${geoscriptUrl}"
         gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -71,6 +71,7 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON sor
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -95,6 +96,7 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -113,6 +115,7 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
         ]
 
         URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
         gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -126,6 +129,7 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -140,6 +144,7 @@ When(~/^a call is made to the Geoscript service QueryLayer requesting a JSON wit
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -163,6 +168,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid param
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -175,6 +181,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid resul
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
@@ -187,6 +194,7 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid featu
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
+    println "Query URL: ${geoscriptUrl}"
     gsQueryLayerReturn = new JsonSlurper().parse(geoscriptUrl)
 }
 
