@@ -64,7 +64,7 @@ When(~/^a call is made to WMTS for a (.*) image the for the entire bounding box 
         HashMap wmtsParams = setWFSIntersectionInfo(wfsCall, 0)
 
         wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds)
-        println wmtsTiles.url
+        println "getTile URL: ${wmtsTiles.url}"
         wmtsReturnImage = File.createTempFile("tempImageWMTS1", ".${imageType}")
         FileUtils.copyURLToFile(wmtsTiles.url, wmtsReturnImage)
 }
@@ -121,7 +121,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds)
         wmtsReturnImage = File.createTempFile("tempImageWMTS1", ".${imageType}")
-        println wmtsTiles.url
+        println "getTile URL: ${wmtsTiles.url}"
         FileUtils.copyURLToFile(wmtsTiles.url, wmtsReturnImage)
 }
 
@@ -136,7 +136,7 @@ Then(~/^WMTS returns tiles that matches the validation (.*) image$/) { String im
     def verificationImageUrl = new URL("${s3BucketUrl}/${s3Bucket}/${wmtsValidationTile}.${imageType}")
     File validFile = File.createTempFile("tempImageWMTS2", ".${imageType}")
     FileUtils.copyURLToFile(verificationImageUrl, validFile)
-
+    println "Verification image = ${verificationImageUrl}"
     wmtsReturnImage.deleteOnExit()
     validFile.deleteOnExit()
 
