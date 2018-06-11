@@ -99,6 +99,7 @@ class WMTSCall
 
         String urlParamsString = urlParamsToString(params)
         String url = "${wmtsServer}/getTile?${urlParamsString}"
+        println "wmts getInvalidTile URL: ${url}"
 
         HashMap result = [url: new URL(url), duration: 0]
         Date endWmtsGetTile = new Date()
