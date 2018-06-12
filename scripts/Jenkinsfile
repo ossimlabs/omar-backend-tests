@@ -1,5 +1,5 @@
 def notifyObj
-node {
+node("ossim-test-build") {
     env.WORKSPACE=pwd()
     env.DISPLAY=":1"
     env.OSSIM_MAVEN_PROXY="https://artifactory.ossim.io/artifactory/ossim-deps"
