@@ -177,8 +177,7 @@ Then(~/^Ortho WMS returns a (.*) that matches the validation of (.*) (.*) (.*) (
         imageId = extension ? imageId += "_${extension}" : imageId
 
         verificationImageUrl = new URL("${s3BucketUrl}/${s3Bucket}/WMS_verification_images/${imageId}.${imageType}")
-        def fileComp = new FileCompare()
-        assert fileComp.checkImages(verificationImageUrl, wmsReturnImage, imageType)
+        assert FileCompare.checkImages(verificationImageUrl, wmsReturnImage, imageType)
 }
 
 Then(~/Ortho WMS returns a jpeg in less than (.*) seconds$/) { Double seconds ->
