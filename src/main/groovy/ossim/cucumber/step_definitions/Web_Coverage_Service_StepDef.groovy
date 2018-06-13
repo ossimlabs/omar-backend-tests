@@ -22,7 +22,6 @@ def coverage = "omar:raster_entry"
 def currentBbox = ""
 
 WCSCall wcsCall
-FileCompare fileCompare
 GPathResult wcsGetCapabilitiesResult
 GPathResult wcsDescribeCoverageResult
 URL wcsGetCoverageURL
@@ -45,7 +44,6 @@ def filterUsingImageId(imageId)
 
 Before('@web_coverage_service') {
     wcsCall = new WCSCall()
-    fileCompare = new FileCompare()
 }
 
 When(~/^a user calls WCS GetCapabilities version (.*) for (.*) (.*) (.*) (.*) image$/) {
@@ -99,7 +97,7 @@ When(~/^a call is made to WCS version (.*) for the entire bounding box of (.*) (
 Then(~/^WCS returns a (.*) that matches the validation image$/) { String imageType ->
     verificationImageURL = new URL("${s3BucketUrl}/${s3Bucket}/${s3WcsVerificationFiles}/${imageId}${currentBbox}.${imageType}")
 
-    assert fileCompare.checkImages(verificationImageURL, wcsGetCoverageURL, imageType)
+    assert FileCompare.checkImages(verificationImageURL, wcsGetCoverageURL, imageType)
 }
 
 When(~/^a call is made to WCS (.*) for a non-existent image$/) { String version ->
