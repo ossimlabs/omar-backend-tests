@@ -58,8 +58,7 @@ Then(~/^ImageSpace returns a (.*) that matches the validation of (.*) (.*) (.*) 
         imageId = extension ? imageId += "_${extension}" : imageId
 
         verificationImageUrl = new URL("${s3BucketUrl}/${s3Bucket}/ImageSpace_verification_images/${imageId}.${imageType}")
-        def fileComp = new FileCompare()
-        assert fileComp.checkImages(verificationImageUrl, imageSpaceReturnImage, imageType)
+        assert FileCompare.checkImages(verificationImageUrl, imageSpaceReturnImage, imageType)
 }
 
 When(~/^a call is made to ImageSpace for a (.*) single tile overview of (.*) (.*) (.*) (.*) image$/) {

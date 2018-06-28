@@ -79,16 +79,12 @@ When(~/^multiple calls are made to a basemap (.*)$/) { String imageNum ->
 
 // Scenario [O2BM-01]
 Then(~/^a (.*) is returned$/) { String imageNum ->
-    def fileComp = new FileCompare()
-
-    assert fileComp.checkImages(verificationImage, test1)
+    assert FileCompare.checkImages(verificationImage, test1)
 }
 
 // Scenario [O2BM-02]
 Then(~/^an (.*) is returned all times$/) { String imageNum ->
-    def fileComp = new FileCompare()
-
-    assert fileComp.checkImages(verificationImage, test1)
-    assert fileComp.checkImages(verificationImage, test2)
-    assert fileComp.checkImages(verificationImage, test3)
+    assert FileCompare.checkImages(verificationImage, test1)
+    assert FileCompare.checkImages(verificationImage, test2)
+    assert FileCompare.checkImages(verificationImage, test3)
 }

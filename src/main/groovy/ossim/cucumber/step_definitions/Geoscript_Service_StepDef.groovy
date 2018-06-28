@@ -164,7 +164,8 @@ When(~/^a call is made to the Geoscript service QueryLayer with an invalid param
             typeName         : "omar:raster_entry",
             resultType       : "results",
             featureFormat    : "JSON",
-            justForYouScottie: "Try_to_deal_with_this_one_Scottie"
+            justForYouScottie: "Try_to_deal_with_this_one_Scottie",
+            max              : defaultMax
     ]
 
     URL geoscriptUrl = new URL("${geoscriptService}/queryLayer?${urlParamsToString(params)}")
