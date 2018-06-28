@@ -69,6 +69,8 @@ class WFSCall
 
         String wfsParamsString = urlParamsToString(wfsParams)
         String wfsUrlString = "${wfsServer}/getFeature?${wfsParamsString}"
+
+        println "WFSCall URL: ${wfsUrlString}"
         URL wfsText = new URL(wfsUrlString)
 
         text = wfsText.text
@@ -107,12 +109,12 @@ class WFSCall
     }
     int getNumFeatures()
     {
-        result.features.size()
+        result?.features?.size()
     }
 
     int getLayer(Integer featureIdx = 0)
     {
-        result.features[featureIdx].properties.id
+        result?.features[featureIdx].properties.id
     }
 
     String getName()
@@ -122,22 +124,22 @@ class WFSCall
 
     Integer getNumberOfResLevels(Integer featureIdx = 0)
     {
-        result.features[featureIdx].properties.number_of_res_levels
+        result?.features[featureIdx].properties.number_of_res_levels
     }
 
     Integer getWidth(Integer featureIdx = 0)
     {
-        result.features[featureIdx].properties.width
+        result?.features[featureIdx].properties.width
     }
 
     Integer getHeight(Integer featureIdx = 0)
     {
-        result.features[featureIdx].properties.height
+        result?.features[featureIdx].properties.height
     }
 
     String getFilename(Integer featureIdx = 0)
     {
-        result.features[featureIdx].properties.filename
+        result?.features[featureIdx].properties.filename
     }
 
     Double getGsd(Integer featureIdx = 0)
