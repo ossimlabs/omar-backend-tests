@@ -1,9 +1,35 @@
-rbtcloudRootDir = "https://omar-dev.ossim.io"
+rbtcloudRootDir = "NOT_ASSIGNED"
+s3BasemapUrlList = "NOT_ASSIGNED"
+targetDeployment = System.getenv("TEST_PROFILE")
+switch(targetDeployment) {
+   case "stage":
+      rbtcloudRootDir = "https://omar-stage.ossim.io"
+      s3BasemapUrlList = "Basemaptest-stage.txt"
+      break
+   case "prod":
+      rbtcloudRootDir = "https://omar-prod.ossim.io"
+      s3BasemapUrlList = "Basemaptest-prod.txt"
+      break
+   case "rel":
+      rbtcloudRootDir = "https://omar-rel.ossim.io"
+      s3BasemapUrlList = "Basemaptest-rel.txt"
+      break
+   case "dev":
+      rbtcloudRootDir = "https://omar-dev.ossim.io"
+      s3BasemapUrlList = "Basemaptest-dev.txt"
+      break
+   default:
+      targetDeployment = "dev"
+      rbtcloudRootDir = "https://omar-dev.ossim.io"
+      s3BasemapUrlList = "Basemaptest-dev.txt"
+      break
+}
 s3Bucket = "o2-test-data/Standard_test_imagery_set"
 s3BucketUrl = "https://s3.amazonaws.com"
 s3WcsVerificationFiles = "WCS_verification_images"
 s3BasemapVerificationFiles = "Basemap_verification_images"
-s3BasemapUrlList = "Basemaptest-dev.txt"
+
+println("\nOMAR URL being tested: ${rbtcloudRootDir}\n")
 
 downloadService = "${rbtcloudRootDir}/omar-download"
 stagingService = "${rbtcloudRootDir}/omar-stager/dataManager"
