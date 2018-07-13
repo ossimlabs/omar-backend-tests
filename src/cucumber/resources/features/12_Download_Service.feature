@@ -14,7 +14,7 @@ Feature: DownloadService
     Then a downloaded file of <index> <platform> <sensor> <format> matches the validation of S3 file <s3Path>
     Examples:
       | index | platform   | sensor | format  | s3Path |
-      | a     | quickbird  | msi    | geotiff | o2-test-data/Standard_test_imagery_set/QuickBird/TIFF/Muliti/04DEC11050020-M2AS_R1C1-000000185964_01_P001.TIF |
+      | a     | quickbird  | msi    | geotiff | o2-test-data/Standard_test_imagery_set/QuickBird/TIFF/Multi/04DEC11050020-M2AS_R1C1-000000185964_01_P001.TIF |
       | a     | worldview2 | pan    | nitf20  | o2-test-data/Standard_test_imagery_set/WorldView/WV2/GeoTIFF/Pan/14SEP12113301-P1BS-053951940020_01_P001.TIF |
       | a     | terrasar-x | sar    | nitf20  | o2-test-data/Standard_test_imagery_set/TerraSAR-X/NITF2_0/14SEP15TS0107001_100021_SL0023L_25N121E_001X___SVV_0101_OBS_IMAG.ntf |
 #      | a     | local      | hsi    | envi    | o2-test-data/hsi/2012-06-11/AM/ALPHA/2012-06-11_18-20-11/HSI/Scan_00007/2012-06-11_18-20-11.HSI.Scan_00007.scene.corrected.hsi |
