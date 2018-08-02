@@ -22,6 +22,7 @@ class WCSCall
         def coverageEncoded = encode(coverage)
         def filterEncoded = encode(filter)
         def wcsUrl = "${wcsServer}/getCapabilities?service=WCS&version=${version}&request=GetCapabilities&coverage=${coverageEncoded}&filter=${filterEncoded}"
+        println "wcsUrl: ${wcsUrl}"
         return xmlParser.parse(wcsUrl)
     }
 

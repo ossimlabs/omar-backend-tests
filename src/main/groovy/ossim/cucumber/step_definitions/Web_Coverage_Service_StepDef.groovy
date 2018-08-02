@@ -61,7 +61,7 @@ When(~/^a user calls WCS GetCapabilities version (.*) for (.*) (.*) (.*) (.*) im
 Then(~/^the WCS service responds with a correct GetCapabilities statement$/) { ->
     String s3VerificationResultURL = "${s3BucketUrl}/${s3Bucket}/${s3WcsVerificationFiles}/wcsGetCapabilities_valid_result_${serverVersion}_image_${imageId}.xml"
     GPathResult s3VerificationResult = wcsCall.getVerificationResultFromStringURL(s3VerificationResultURL)
-
+    println "s3VerificationResultURL: ${s3VerificationResultURL}"
     assert wcsCall.compareResults(wcsGetCapabilitiesResult, s3VerificationResult)
 }
 
