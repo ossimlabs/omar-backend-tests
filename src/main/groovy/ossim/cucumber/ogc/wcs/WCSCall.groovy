@@ -31,6 +31,7 @@ class WCSCall
         def coverageEncoded = encode(coverage)
         def filterEncoded = encode(filter)
         def wcsUrl = "${wcsServer}/describeCoverage?service=WCS&version=${version}&request=DescribeCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}"
+        println "wcsUrl: ${wcsUrl}"
         return xmlParser.parse(wcsUrl)
     }
 
@@ -47,6 +48,7 @@ class WCSCall
         def filterEncoded = encode(filter)
         def bboxEncoded = encode(bbox)
         def wcsUrl = "${wcsServer}/getCoverage?service=WCS&version=${version}&request=GetCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}&crs=epsg%3A4326&bbox=${bboxEncoded}&width=1024&height=512&format=GeoTIFF"
+        println "wcsUrl: ${wcsUrl}"
         return new URL(wcsUrl)
     }
 
