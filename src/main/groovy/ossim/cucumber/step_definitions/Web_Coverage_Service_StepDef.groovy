@@ -73,13 +73,15 @@ When(~/^a user calls WCS DescribeCoverage version (.*) for (.*) (.*) (.*) (.*) i
         def filter = filterUsingImageId(imageId)
         serverVersion = version
 
+        println "Getting wcsDescribeCoverageResult...."
         wcsDescribeCoverageResult = wcsCall.describeCoverage(wcsServer, serverVersion, coverage, filter)
 }
 
 Then(~/^the WCS service responds with a correct DescribeCoverage data for that image$/) { ->
     String s3VerificationResultURL = "${s3BucketUrl}/${s3Bucket}/${s3WcsVerificationFiles}/wcsDescribeCoverage_valid_result_${serverVersion}_image_${imageId}.xml"
     GPathResult s3VerificationResult = wcsCall.getVerificationResultFromStringURL(s3VerificationResultURL)
-
+    println "s3VerificationResultURL: ${s3VerificationResultURL}"
+    println "Checking with wcsDescribeCoverageResult"
     assert wcsCall.compareResults(wcsDescribeCoverageResult, s3VerificationResult)
 }
 
