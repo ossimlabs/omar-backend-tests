@@ -10,6 +10,14 @@ switch(targetDeployment) {
       rbtcloudRootDir = "https://omar-prod.ossim.io"
       s3BasemapUrlList = "Basemaptest-prod.txt"
       break
+   case "blue":
+      rbtcloudRootDir = "https://omar-blue.ossim.io"
+      s3BasemapUrlList = "Basemaptest-prod.txt"
+      break
+   case "green":
+      rbtcloudRootDir = "https://omar-green.ossim.io"
+      s3BasemapUrlList = "Basemaptest-prod.txt"
+      break
    case "rel":
       rbtcloudRootDir = "https://omar-rel.ossim.io"
       s3BasemapUrlList = "Basemaptest-rel.txt"
