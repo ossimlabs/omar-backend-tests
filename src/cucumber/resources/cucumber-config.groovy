@@ -1,7 +1,12 @@
-rbtcloudRootDir = "NOT_ASSIGNED"
-s3BasemapUrlList = "NOT_ASSIGNED"
-targetDeployment = System.getenv("TEST_PROFILE")
+targetDeployment = System.getenv("TARGET_DEPLOYMENT")
+if (!targetDeployment) {
+   targetDeployment = "dev"
+}
 domainName = System.getenv("DOMAIN_NAME")
+if (!domainName) {
+   domainName = "ossim.io"
+}
+s3BasemapUrlList = "NOT_ASSIGNED"
 rbtcloudRootDir = "https://omar-${targetDeployment}.${domainName}"
 switch(targetDeployment) {
    case "stage":
@@ -23,7 +28,7 @@ switch(targetDeployment) {
       s3BasemapUrlList = "Basemaptest-dev.txt"
       break
    default:
-      println("\nBad TEST_PROFILE provided: <${targetDeployment}>. Defaulting to dev.")
+      println("\nBad TARGET_DEPLOYMENT provided: <${targetDeployment}>. Defaulting to dev.")
       s3BasemapUrlList = "Basemaptest-dev.txt"
       rbtcloudRootDir = "https://omar-dev.${domainName}"
       break
