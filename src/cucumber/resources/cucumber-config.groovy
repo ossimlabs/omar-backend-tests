@@ -1,35 +1,31 @@
 rbtcloudRootDir = "NOT_ASSIGNED"
 s3BasemapUrlList = "NOT_ASSIGNED"
 targetDeployment = System.getenv("TEST_PROFILE")
+domainName = System.getenv("DOMAIN_NAME")
+rbtcloudRootDir = "https://omar-${targetDeployment}.${domainName}"
 switch(targetDeployment) {
    case "stage":
-      rbtcloudRootDir = "https://omar-stage.ossim.io"
       s3BasemapUrlList = "Basemaptest-stage.txt"
       break
    case "prod":
-      rbtcloudRootDir = "https://omar-prod.ossim.io"
       s3BasemapUrlList = "Basemaptest-prod.txt"
       break
    case "blue":
-      rbtcloudRootDir = "https://omar-blue.ossim.io"
       s3BasemapUrlList = "Basemaptest-prod.txt"
       break
    case "green":
-      rbtcloudRootDir = "https://omar-green.ossim.io"
       s3BasemapUrlList = "Basemaptest-prod.txt"
       break
    case "rel":
-      rbtcloudRootDir = "https://omar-rel.ossim.io"
       s3BasemapUrlList = "Basemaptest-rel.txt"
       break
    case "dev":
-      rbtcloudRootDir = "https://omar-dev.ossim.io"
       s3BasemapUrlList = "Basemaptest-dev.txt"
       break
    default:
-      targetDeployment = "dev"
-      rbtcloudRootDir = "https://omar-dev.ossim.io"
+      println("\nBad TEST_PROFILE provided: <${targetDeployment}>. Defaulting to dev.")
       s3BasemapUrlList = "Basemaptest-dev.txt"
+      rbtcloudRootDir = "https://omar-dev.${domainName}"
       break
 }
 s3Bucket = "o2-test-data/Standard_test_imagery_set"
