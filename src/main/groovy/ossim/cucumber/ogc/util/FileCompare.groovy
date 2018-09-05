@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 import java.awt.image.DataBuffer
+import java.lang.Math.sqrt;
 
 class FileCompare
 {
