@@ -54,10 +54,7 @@ class FileCompare
          }
 
          // Compare data-buffer objects by computing normalized cross-correlation:
-         double sumA2=0
-         double sumB2=0
-         double sumAB=0
-         double a, b
+         double a=0, b=0, sumA2=0, sumB2=0, sumAB=0
          for (int i = 0; i < sizeA; i++)
          {
             a = dbA.getElem(i);
