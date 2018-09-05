@@ -37,7 +37,7 @@ class FileCompare
 
         double correlation = compareImage(file1, file2)
         println "Image Correlation: ${correlation}\n"
-        return (matchPercent > 0.99)
+        return (correlation > 0.99)
 
         //double matchPercent = compareImage(file1, file2)
         //println "Image match percent: ${matchPercent}\n"
@@ -46,7 +46,8 @@ class FileCompare
 
     private static double compareImage(@NotNull File fileA, @NotNull File fileB) {
         if (!fileA.exists() || !fileB.exists()) return 100
-        double percentage = 0
+        //double percentage = 0
+        double correlation = 0
         try {
             // Take buffer data from both image files.
             BufferedImage biA = ImageIO.read(fileA)
