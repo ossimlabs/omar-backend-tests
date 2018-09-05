@@ -14,8 +14,8 @@ class FileCompare
     static boolean checkImages(String filePath1, String filePath2, String image_type = null)
     {
         println "\n### Entering FileCompare::checkImages(1) ###"
-                "\n###    filePath1: ${filePath1}"
-                "\n###    filePath2: ${filePath2}"
+        println "###    filePath1: ${filePath1}"
+        println "###    filePath2: ${filePath2}"
         boolean imagesEqual
         String suffix = image_type ? ".${image_type}" : ""
         File file1 = File.createTempFile("tempImage1", suffix)
@@ -34,18 +34,19 @@ class FileCompare
 
     static boolean checkImages(File file1, File file2)
     {
-        println "\n### Entering FileCompare::checkImages(2) ###\n"
-                "\n###    file1: ${file1}"
-                "\n###    file2: ${file2}"
+        println "\n### Entering FileCompare::checkImages(2) ###"
+        println "###    file1: ${file1}"
+        println "###    file2: ${file2}"
+
         double matchPercent = compareImage(file1, file2)
         println "Image match percent: $matchPercent"
         return (matchPercent > 90.0)
     }
 
     private static double compareImage(@NotNull File fileA, @NotNull File fileB) {
-      println "\n### Entering FileCompare::compareImage() ###\n"
-              "\n###    fileA: ${fileA}"
-              "\n###    fileB: ${fileB}"
+        println "\n### Entering FileCompare::compareImage() ###"
+        println "###    fileA: ${fileA}"
+        println "###    fileB: ${fileB}"
         if (!fileA.exists() || !fileB.exists()) return 100
         double percentage = 0
         try {
