@@ -22,7 +22,7 @@ class FileCompare
         FileUtils.copyURLToFile(filePath2, file2)
 
         imagesEqual = FileUtils.contentEquals(file1, file2)
-        println "Exact match: $imagesEqual\n"
+        println "Exact match: ${imagesEqual}\n"
 
         file1.deleteOnExit()
         file2.deleteOnExit()
@@ -35,7 +35,7 @@ class FileCompare
         println "\n### Entering (2) FileCompare::checkImages(${file1}, ${file2})"
 
         double matchPercent = compareImage(file1, file2)
-        println "Image match percent: $matchPercent\n"
+        println "Image match percent: ${matchPercent}\n"
         return (matchPercent > 90.0)
     }
 
