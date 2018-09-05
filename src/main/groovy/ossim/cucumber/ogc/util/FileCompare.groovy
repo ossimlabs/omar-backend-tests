@@ -74,7 +74,7 @@ class FileCompare
                   //      count = count + 1
                   //  }
                 }
-                double correlation = sumAB / sqrt(sumA2 * sumB2);
+                correlation = sumAB / sqrt(sumA2 * sumB2);
                 //percentage = (count * 100) / sizeA
             } else {
                 System.out.println("Images are not of same size")
