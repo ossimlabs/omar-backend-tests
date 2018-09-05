@@ -13,10 +13,7 @@ class FileCompare
 
     static boolean checkImages(String filePath1, String filePath2, String image_type = null)
     {
-        println "\n### Entering FileCompare::checkImages(1) ###"
-        println "###    filePath1: ${filePath1}"
-        println "###    filePath2: ${filePath2}"
-        boolean imagesEqual
+        println "\n### Entering (1) FileCompare::checkImages(${filePath1}, ${filePath2})"
         String suffix = image_type ? ".${image_type}" : ""
         File file1 = File.createTempFile("tempImage1", suffix)
         File file2 = File.createTempFile("tempImage2", suffix)
@@ -25,6 +22,7 @@ class FileCompare
         FileUtils.copyURLToFile(filePath2, file2)
 
         imagesEqual = FileUtils.contentEquals(file1, file2)
+        println "Exact match: $imagesEqual\n"
 
         file1.deleteOnExit()
         file2.deleteOnExit()
@@ -34,12 +32,10 @@ class FileCompare
 
     static boolean checkImages(File file1, File file2)
     {
-        println "\n### Entering FileCompare::checkImages(2) ###"
-        println "###    file1: ${file1}"
-        println "###    file2: ${file2}"
+        println "\n### Entering (2) FileCompare::checkImages(${file1}, ${file2})"
 
         double matchPercent = compareImage(file1, file2)
-        println "Image match percent: $matchPercent"
+        println "Image match percent: $matchPercent\n"
         return (matchPercent > 90.0)
     }
 
@@ -65,7 +61,7 @@ class FileCompare
                 }
                 percentage = (count * 100) / sizeA
             } else {
-                System.out.println("Both the images are not of same size")
+                System.out.println("Images are not of same size")
             }
 
         } catch (Exception e) {
