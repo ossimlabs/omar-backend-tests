@@ -11,32 +11,36 @@ class FileCompare
 {
     FileCompare() {}
 
-   //  static boolean checkImages(String filePath1, String filePath2, String image_type = null)
-   //  {
-   //      println "### Entering (1) FileCompare::checkImages(${filePath1}, ${filePath2})"
-   //      String suffix = image_type ? ".${image_type}" : ""
-   //      File file1 = File.createTempFile("tempImage1", suffix)
-   //      File file2 = File.createTempFile("tempImage2", suffix)
-    //
-   //      FileUtils.copyURLToFile(filePath1, file1)
-   //      FileUtils.copyURLToFile(filePath2, file2)
-    //
-   //      boolean imagesEqual = FileUtils.contentEquals(file1, file2)
-   //      println "Exact match: ${imagesEqual}\n"
-    //
-   //      file1.deleteOnExit()
-   //      file2.deleteOnExit()
-    //
-   //      return imagesEqual
-   //  }
-    //
+    static boolean checkImages(URL filePath1, URL filePath2, String image_type=null)
+    {
+        println "### Entering (1) FileCompare::checkImages(${filePath1}, ${filePath2})"
+        String suffix = image_type ? ".${image_type}" : ""
+        File file1 = File.createTempFile("tempImage1", suffix)
+        File file2 = File.createTempFile("tempImage2", suffix)
+
+        FileUtils.copyURLToFile(filePath1, file1)
+        FileUtils.copyURLToFile(filePath2, file2)
+
+        boolean imagesEqual = FileUtils.contentEquals(file1, file2)
+        println "Exact match: ${imagesEqual}\n"
+
+        file1.deleteOnExit()
+        file2.deleteOnExit()
+
+        return imagesEqual
+    }
+
     static boolean checkImages(File file1, File file2)
     {
         println "### Entering (2) FileCompare::checkImages(${file1}, ${file2})"
 
-        double matchPercent = compareImage(file1, file2)
-        println "Image match percent: ${matchPercent}\n"
-        return (matchPercent > 90.0)
+        double correlation = compareImage(file1, file2)
+        println "Image Correlation: ${correlation}\n"
+        return (matchPercent > 0.99)
+
+        //double matchPercent = compareImage(file1, file2)
+        //println "Image match percent: ${matchPercent}\n"
+        //return (matchPercent > 90.0)
     }
 
     private static double compareImage(@NotNull File fileA, @NotNull File fileB) {
@@ -52,14 +56,24 @@ class FileCompare
             int sizeB = dbB.getSize()
 
             // Compare data-buffer objects.
-            int count = 0
+            //int count = 0
+            double sumA2=0
+            double sumB2=0
+            double sumAB=0
+            double a, b
             if (sizeA == sizeB) {
                 for (int i = 0; i < sizeA; i++) {
-                    if (dbA.getElem(i) == dbB.getElem(i)) {
-                        count = count + 1
-                    }
+                   a = dbA.getElem(i);
+                   b = dbB.getElem(i);
+                   sumA2 += a * a;
+                   sumB2 += b * b;
+                   sumAB += a * b;
+                  //  if (dbA.getElem(i) == dbB.getElem(i)) {
+                  //      count = count + 1
+                  //  }
                 }
-                percentage = (count * 100) / sizeA
+                double correlation = sumAB / sqrt(sumA2 * sumB2);
+                //percentage = (count * 100) / sizeA
             } else {
                 System.out.println("Images are not of same size")
             }
@@ -68,6 +82,7 @@ class FileCompare
             System.out.println("Failed to compare image files ...")
             throw e
         }
-        return percentage
+        return correlation
+        //return percentage
     }
 }
