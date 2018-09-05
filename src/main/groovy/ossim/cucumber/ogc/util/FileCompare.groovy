@@ -74,7 +74,12 @@ class FileCompare
          throw e
       }
 
-      println "FileCompare::checkImages()  Image Correlation: ${correlation}"
-      return (correlation > 0.99)
+      boolean passed = (correlation > 0.99)
+      if (passed)
+         println "FileCompare::checkImages()  PASSED -- correlation: ${correlation}"
+      else
+         println "FileCompare::checkImages()  FAILED -- correlation: ${correlation}"
+
+      return (passed)
     }
 }
