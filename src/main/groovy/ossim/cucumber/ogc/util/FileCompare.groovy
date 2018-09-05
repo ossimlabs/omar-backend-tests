@@ -14,7 +14,9 @@ class FileCompare
 
     static boolean checkImages(URL filePath1, URL filePath2, String image_type=null)
     {
-        println "\nFileCompare::checkImages(${filePath1}, ${filePath2})"
+        println "\nFileCompare::checkImages()"
+        println "    ${filePath1}"
+        printls "    ${filePath2}"
         String suffix = image_type ? ".${image_type}" : ""
         File file1 = File.createTempFile("tempImage1", suffix)
         File file2 = File.createTempFile("tempImage2", suffix)
