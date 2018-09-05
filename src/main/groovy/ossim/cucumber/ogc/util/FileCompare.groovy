@@ -21,13 +21,13 @@ class FileCompare
         FileUtils.copyURLToFile(filePath1, file1)
         FileUtils.copyURLToFile(filePath2, file2)
 
-        imagesEqual = FileUtils.contentEquals(file1, file2)
+        boolean imagesEqual = FileUtils.contentEquals(file1, file2)
         println "Exact match: ${imagesEqual}\n"
 
         file1.deleteOnExit()
         file2.deleteOnExit()
 
-        imagesEqual
+        return imagesEqual
     }
 
     static boolean checkImages(File file1, File file2)
