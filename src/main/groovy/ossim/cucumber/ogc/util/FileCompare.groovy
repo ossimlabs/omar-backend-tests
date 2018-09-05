@@ -32,7 +32,7 @@ class FileCompare
         return imagesEqual
     }
 
-    static boolean checkImages(File file1, File file2)
+    static boolean checkImages(File fileA, File fileB)
     {
       if (!fileA.exists() || !fileB.exists())
           return 0
@@ -53,7 +53,7 @@ class FileCompare
             return 0
          }
 
-         // Compare data-buffer objects by computing normailized cross-correlation:
+         // Compare data-buffer objects by computing normalized cross-correlation:
          double sumA2=0
          double sumB2=0
          double sumAB=0
