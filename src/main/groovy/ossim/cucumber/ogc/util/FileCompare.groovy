@@ -44,9 +44,6 @@ class FileCompare
     }
 
     private static double compareImage(@NotNull File fileA, @NotNull File fileB) {
-        println "\n### Entering FileCompare::compareImage() ###"
-        println "###    fileA: ${fileA}"
-        println "###    fileB: ${fileB}"
         if (!fileA.exists() || !fileB.exists()) return 100
         double percentage = 0
         try {
@@ -69,7 +66,6 @@ class FileCompare
                 percentage = (count * 100) / sizeA
             } else {
                 System.out.println("Both the images are not of same size")
-                percentage == 100
             }
 
         } catch (Exception e) {
