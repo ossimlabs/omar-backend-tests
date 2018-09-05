@@ -14,7 +14,7 @@ class FileCompare
 
     static boolean checkImages(URL filePath1, URL filePath2, String image_type=null)
     {
-        println "### Entering (1) FileCompare::checkImages(${filePath1}, ${filePath2})"
+        println "\nFileCompare::checkImages(${filePath1}, ${filePath2})"
         String suffix = image_type ? ".${image_type}" : ""
         File file1 = File.createTempFile("tempImage1", suffix)
         File file2 = File.createTempFile("tempImage2", suffix)
@@ -23,7 +23,7 @@ class FileCompare
         FileUtils.copyURLToFile(filePath2, file2)
 
         boolean imagesEqual = FileUtils.contentEquals(file1, file2)
-        println "Exact match: ${imagesEqual}\n"
+        println "Exact match: ${imagesEqual}"
 
         file1.deleteOnExit()
         file2.deleteOnExit()
@@ -33,10 +33,10 @@ class FileCompare
 
     static boolean checkImages(File file1, File file2)
     {
-        println "### Entering (2) FileCompare::checkImages(${file1}, ${file2})"
+        println "\nFileCompare::checkImages(${file1}, ${file2})"
 
         double correlation = compareImage(file1, file2)
-        println "Image Correlation: ${correlation}\n"
+        println "Image Correlation: ${correlation}"
         return (correlation > 0.99)
 
         //double matchPercent = compareImage(file1, file2)
