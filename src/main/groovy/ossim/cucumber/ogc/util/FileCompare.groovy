@@ -26,8 +26,10 @@ class FileCompare
 
         boolean imagesEqual = checkImages(file1, file2)
 
-        file1.deleteOnExit()
-        file2.deleteOnExit()
+        if (imagesEqual) {
+           file1.deleteOnExit()
+           file2.deleteOnExit()
+        }
 
         return imagesEqual
     }
@@ -37,8 +39,6 @@ class FileCompare
       if (!fileA.exists() || !fileB.exists())
           return 0
 
-      println "###    ${fileA}"
-      println "###    ${fileB}"
       double correlation = 0
       try
       {
@@ -65,7 +65,11 @@ class FileCompare
             sumB2 += b * b;
             sumAB += a * b;
          }
-         correlation = sumAB / sqrt(sumA2 * sumB2);
+         double denom = sqrt(sumA2 * sumB2);
+         if (denom != 0.0)
+            correlation = sumAB / sqrt(sumA2 * sumB2);
+         else
+            correlation = 0.0;
       }
       catch (Exception e)
       {
