@@ -26,8 +26,8 @@ class FileCompare
 
         boolean imagesEqual = checkImages(file1, file2)
 
-//        file1.deleteOnExit()
-//        file2.deleteOnExit()
+        file1.deleteOnExit()
+        file2.deleteOnExit()
 
         return imagesEqual
     }
