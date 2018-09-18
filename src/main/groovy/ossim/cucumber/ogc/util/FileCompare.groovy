@@ -39,6 +39,8 @@ class FileCompare
       if (!fileA.exists() || !fileB.exists())
           return 0
 
+      println "###    ${fileA}"
+      println "###    ${fileB}"
       double correlation = 0
       try
       {
