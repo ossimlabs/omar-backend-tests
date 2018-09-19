@@ -18,6 +18,7 @@ class WMTSCall
             version      : "1.0.0",
             request      : "GetTile",
             layer        : "",
+            filter       : "",
             format       : "image/jpeg",
             tileRow      : null,
             tileCol      : null,
@@ -47,6 +48,7 @@ class WMTSCall
      * @return HashMap that contains a data and elaps
      */
     HashMap getTile(HashMap layer, Double gsd, Integer nResLevels, Integer width, Integer height, Bounds bounds,
+                    String filter = "",
                     String format = "image/jpeg")
     {
         Date startWmtsGetTile = new Date()
@@ -63,6 +65,7 @@ class WMTSCall
         HashMap params = new HashMap(wmtsGetTileParams)
 
         params.layer = layer.name
+        params.filter = filter
         params.format = format
         params.tileRow = centerTileInfo.tile.y
         params.tileCol = centerTileInfo.tile.x
