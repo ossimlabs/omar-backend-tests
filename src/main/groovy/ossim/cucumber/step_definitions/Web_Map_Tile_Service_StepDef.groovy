@@ -119,7 +119,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
         WFSCall wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
         HashMap wmtsParams = setWFSIntersectionInfo(wfsCall, 0)
 
-        wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds, "number_of_bands>1")
+        wmtsTiles = wmtsCall.getTile(layerHashMap, wmtsParams.gsd, wmtsParams.nResLevels, wmtsParams.width, wmtsParams.height, wmtsParams.bounds)
         wmtsReturnImage = File.createTempFile("tempImageWMTS1", ".${imageType}")
         println "getTile URL: ${wmtsTiles.url}"
         FileUtils.copyURLToFile(wmtsTiles.url, wmtsReturnImage)
