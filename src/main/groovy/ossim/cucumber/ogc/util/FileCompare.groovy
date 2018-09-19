@@ -10,45 +10,51 @@ import static java.lang.Math.sqrt
 
 class FileCompare
 {
-    FileCompare() {}
+   FileCompare() {}
 
-    static boolean checkImages(URL filePath1, URL filePath2, String image_type=null)
-    {
-        println "\nFileCompare::checkImages(URL,URL)"
-        println ">>>    ${filePath1}"
-        println ">>>    ${filePath2}"
-        String suffix = image_type ? ".${image_type}" : ""
-        File file1 = File.createTempFile("tempImage1", suffix)
-        File file2 = File.createTempFile("tempImage2", suffix)
+   static boolean checkImages(URL filePath1, URL filePath2, String image_type=null)
+   {
+      println "\n### FileCompare::checkImages(URL1, URL2)"
+      println "### URL1   ${filePath1}"
+      println "### URL2   ${filePath2}"
+      String suffix = image_type ? ".${image_type}" : ""
+      File file1 = File.createTempFile("tempImage1", suffix)
+      File file2 = File.createTempFile("tempImage2", suffix)
 
-        FileUtils.copyURLToFile(filePath1, file1)
-        FileUtils.copyURLToFile(filePath2, file2)
+      FileUtils.copyURLToFile(filePath1, file1)
+      FileUtils.copyURLToFile(filePath2, file2)
 
-        boolean imagesEqual = checkImages(file1, file2)
+      boolean imagesEqual = checkImages(file1, file2)
 
-        if (imagesEqual) {
-           file1.deleteOnExit()
-           file2.deleteOnExit()
-        }
+      if (imagesEqual)
+      {
+         file1.deleteOnExit()
+         file2.deleteOnExit()
+      }
+      else
+      {
+         println "### Failed test -- preserving temporary files on server."
+      }
 
-        return imagesEqual
-    }
+      return imagesEqual
+   }
 
-    static boolean checkImages(File fileA, File fileB)
-    {
-      if (!fileA.exists() || !fileB.exists())
-          return 0
+   static boolean checkImages(File file1, File file2)
+   {
+      if (!file1.exists() || !file2.exists())
+         return 0
 
-      println "###    ${fileA}"
-      println "###    ${fileB}"
+      println "\n@@@ FileCompare::checkImages(File1, File2)"
+      println "@@@ File1   ${file1}"
+      println "@@@ File2   ${file2}"
       double correlation = 0
       try
       {
          // Take buffer data from both image files.
-         BufferedImage biA = ImageIO.read(fileA)
+         BufferedImage biA = ImageIO.read(file1)
          DataBuffer dbA = biA.getData().getDataBuffer()
          int sizeA = dbA.getSize()
-         BufferedImage biB = ImageIO.read(fileB)
+         BufferedImage biB = ImageIO.read(file2)
          DataBuffer dbB = biB.getData().getDataBuffer()
          int sizeB = dbB.getSize()
          if (sizeA != sizeB)
@@ -86,5 +92,5 @@ class FileCompare
          println "FileCompare::checkImages()  correlation=${correlation}  FAILED"
 
       return (passed)
-    }
+   }
 }
