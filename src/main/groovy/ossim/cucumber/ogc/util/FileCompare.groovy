@@ -77,6 +77,8 @@ class FileCompare
          double denom = sqrt(sumA2 * sumB2);
          if (denom > FLT_EPSILON)
             correlation = sumAB / denom;
+         else if((sumA2 < FLT_EPSILON)&&(sumB2 < FLT_EPSILON)) // if both are zero then correlated
+            correlation = 1.0;
          else
             correlation = 0.0;
       }
