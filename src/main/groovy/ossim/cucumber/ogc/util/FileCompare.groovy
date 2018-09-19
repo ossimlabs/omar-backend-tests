@@ -41,6 +41,7 @@ class FileCompare
 
    static boolean checkImages(File file1, File file2)
    {
+       static double FLT_EPSILON=0.000000001;
       if (!file1.exists() || !file2.exists())
          return 0
 
@@ -74,8 +75,8 @@ class FileCompare
             sumAB += a * b;
          }
          double denom = sqrt(sumA2 * sumB2);
-         if (denom != 0.0)
-            correlation = sumAB / sqrt(sumA2 * sumB2);
+         if (denom < FLT_EPSILON)
+            correlation = sumAB / denom;
          else
             correlation = 0.0;
       }
