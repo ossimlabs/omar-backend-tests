@@ -41,7 +41,7 @@ class FileCompare
 
    static boolean checkImages(File file1, File file2)
    {
-       static double FLT_EPSILON=0.000000001;
+      double FLT_EPSILON=0.000000001;
       if (!file1.exists() || !file2.exists())
          return 0
 
