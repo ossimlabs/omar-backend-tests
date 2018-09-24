@@ -118,7 +118,7 @@ Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*)$/) 
     String imageId  = config.images[param1.toLowerCase()][param2.toLowerCase()][param3.toLowerCase()][0]
     String filter = "title = '${imageId}'"
     wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
-    def props = wfsCall.getName()?.properties
+    def props = wfsCall.getFeature()?.properties
     assert props?.hasProperty("receive_date") == true
 }
 

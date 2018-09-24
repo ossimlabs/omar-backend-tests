@@ -116,7 +116,10 @@ class WFSCall
     {
         result?.features[featureIdx].properties.id
     }
-
+    def getFeature(Integer featureIdx = 0)
+    {
+        result?.features[featureIdx]
+    }
     String getName()
     {
         result.features
