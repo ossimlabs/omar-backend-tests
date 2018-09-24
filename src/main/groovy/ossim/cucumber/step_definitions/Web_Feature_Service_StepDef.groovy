@@ -112,14 +112,15 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
         }
 }
 
-Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*) (.*)$/) {
-    String format, String index, String platform, String sensor ->
+Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*)$/) {
+    String param1, String param2, String param3 ->
 
-        def imageId = getImageId(format, index, platform, sensor)
+    prinltn "HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        // def imageId = getImageId(format, index, platform, sensor)
 
-        def props = wfsCall.getName()?.properties
-        println "Validating if field 'receive_date' is in the result of the wfs call"
-        assert props?.hasProperty("receive_date") == true
+        // def props = wfsCall.getName()?.properties
+        // println "Validating if field 'receive_date' is in the result of the wfs call"
+        // assert props?.hasProperty("receive_date") == true
 }
 
 
