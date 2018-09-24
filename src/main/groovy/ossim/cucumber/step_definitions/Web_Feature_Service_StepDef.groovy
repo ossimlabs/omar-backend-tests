@@ -113,12 +113,12 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
 }
 
 Then(~/^the WFS call will have the (.*) populated for (.*) (.*) (.*) (.*) image$/) {
-    String index, String platform, String sensor, String format ->
+    String field, String index, String platform, String sensor, String format ->
 
         def imageId = getImageId(format, index, platform, sensor)
 
         def props = wfsCall.getName()?.properties
-        assert props?.receive_date != null
+        assert props?.hasProperty(field) == true
 }
 
 
