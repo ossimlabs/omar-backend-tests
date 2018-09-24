@@ -78,3 +78,7 @@ Feature: SearchWFSService
     Given that the WFS service is available
     When a WFS post to omar-oldmar with a filter in xml format is made
     Then the WFS call returns metadata in a GML2 format
+
+Scenario: WFS call to search for an image by ImageID and verify receve_date is populated
+    When a WFS call is made to search for a WorldView2 PAN NITF20 image
+    Then the WFS call will have the receive_date populated for WorldView2 PAN NITF20 image

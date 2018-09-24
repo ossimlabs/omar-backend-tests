@@ -112,6 +112,16 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
         }
 }
 
+Then(~/^the WFS call will have the (.*) populated for (.*) (.*) (.*) (.*) image$/) {
+    String index, String platform, String sensor, String format ->
+
+        def imageId = getImageId(format, index, platform, sensor)
+
+        def props = wfsCall.getName()?.properties
+        assert props?.receive_date != null
+}
+
+
 When(~/^a WFS call is made to search for an image specifying a BE Number of (.*)$/) { String beNumber ->
     def filter = "be_number LIKE '%${beNumber}%'"
 }
