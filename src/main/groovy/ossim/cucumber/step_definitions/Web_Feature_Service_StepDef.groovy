@@ -118,6 +118,7 @@ Then(~/^the WFS call will have the (.*) populated for (.*) (.*) (.*) (.*) image$
         def imageId = getImageId(format, index, platform, sensor)
 
         def props = wfsCall.getName()?.properties
+        println "Validating if field '${field}'' is in the result of the wfs call"
         assert props?.hasProperty(field) == true
 }
 
