@@ -115,12 +115,11 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
 Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*)$/) {
     String param1, String param2, String param3 ->
 
-    prinltn "HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        // def imageId = getImageId(format, index, platform, sensor)
-
-        // def props = wfsCall.getName()?.properties
-        // println "Validating if field 'receive_date' is in the result of the wfs call"
-        // assert props?.hasProperty("receive_date") == true
+    String imageId  = config.images[param1.toLowerCase()][param2.toLowerCase()][param3.toLowerCase()] 
+    String filter = "title = '${imageId}'"
+    wfsCall = new WFSCall(wfsServer, filter, "JSON", 1)
+    def props = wfsCall.getName()?.properties
+    assert props?.hasProperty("receive_date") == true
 }
 
 
