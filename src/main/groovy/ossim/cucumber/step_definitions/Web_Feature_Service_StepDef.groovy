@@ -112,7 +112,7 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
         }
 }
 
-Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*) (.*) image$/) {
+Then(~/^the WFS call will have the receive_date populated for (.*) (.*) (.*) (.*)$/) {
     String format, String index, String platform, String sensor ->
 
         def imageId = getImageId(format, index, platform, sensor)

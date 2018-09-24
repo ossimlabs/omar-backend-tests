@@ -32,7 +32,7 @@ Feature: SearchWFSService
 
   Scenario: [WFS-08] WFS call to search for an image by ImageID and verify receve_date is populated
     When a WFS call is made to search for a WorldView2 PAN NITF20 image
-    Then the WFS call will have the receive_date populated for WorldView2 PAN NITF20 image
+    Then the WFS call will have the receive_date populated for WorldView2 PAN NITF20
 
 
   @C2S
