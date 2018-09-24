@@ -112,13 +112,14 @@ Then(~/^the WFS call returns a feature for (.*) (.*) (.*) (.*) image$/) {
         }
 }
 
-Then(~/^the WFS call will have the (.*) populated for (.*) (.*) (.*) image$/) {
-    String field, String index, String platform, String sensor ->
+Then(~/^the WFS call will have the (.*) populated for (.*) (.*) (.*) (.*) image$/) {
+    String field, String format, String index, String platform, String sensor ->
 
-        def imageId = getImageId("JSON", index, platform, sensor)
+        println "field: ${field}, format: ${format}, index: ${index}, platform: ${platform}, sensor: ${sensor}"
+        def imageId = getImageId(format, index, platform, sensor)
 
         def props = wfsCall.getName()?.properties
-        println "Validating if field '${field}'' is in the result of the wfs call"
+        println "Validating if field '${field}' is in the result of the wfs call"
         assert props?.hasProperty(field) == true
 }
 
