@@ -113,7 +113,7 @@ When(~/^a call is made to WMTS for (.*) of a subset of (.*) (.*) (.*) (.*) image
 
         def imageId = getImageId(format, index, platform, sensor)
 
-        String filter = "number_of_bands > 1 and entry_id='0' and filename LIKE '%${imageId}%'"
+        String filter = "entry_id='0' and filename LIKE '%${imageId}%'"
         wmtsCall = new WMTSCall(wmtsServer: wmtsServer)
         wmtsLayers = wmtsCall.layers
         HashMap layerHashMap = wmtsLayers[0] as HashMap
