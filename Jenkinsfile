@@ -30,14 +30,15 @@ node("${BUILD_NODE}") {
     {
         step ([$class: "CopyArtifact",
             projectName: "ossim-ci",
-            filter: "cucumber-configs/cucumber-config-backend.groovy"])
+            filter: "cucumber-configs/cucumber-config-backend.groovy",
+            flatten: true])
     }
 
     try{
         stage("Run Test"){
             sh """
                 echo "TARGET_DEPLOYMENT = ${TARGET_DEPLOYMENT}"
-                export CUCUMBER_CONFIG_LOCATION="cucumber-config-backend.txt"
+                export CUCUMBER_CONFIG_LOCATION="cucumber-config-backend.groovy"
                 export DISPLAY=":1"
                 gradle backend
             """
