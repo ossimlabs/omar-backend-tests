@@ -37,7 +37,7 @@ node("${BUILD_NODE}") {
         stage("Run Test"){
             sh """
                 echo "TARGET_DEPLOYMENT = ${TARGET_DEPLOYMENT}"
-                export CUCUMBER_CONFIG_LOCATION="cucumber-config-ingest.txt"
+                export CUCUMBER_CONFIG_LOCATION="cucumber-config-backend.txt"
                 export DISPLAY=":1"
                 gradle backend
             """
