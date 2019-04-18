@@ -25,7 +25,7 @@ ext {
 
 repositories {
     mavenLocal()
-    maven { url "${System.env.REPOSITORY_MANAGER_URL}/ossim-deps" }
+    maven { url "${System.env.REPOSITORY_MANAGER_URL}/all-repos" }
 }
 
 
