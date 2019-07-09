@@ -76,6 +76,31 @@ class WFSCall
         text = wfsText.text
         result = outputFormat == "JSON" ? new JsonSlurper().parseText(text) : text
     }
+    
+    WFSCall(wfsServer, filter, outputFormat, maxFeatures, typeName)
+    {
+        HashMap wfsParams = [
+                service     : "WFS",
+                version     : "1.1.0",
+                request     : "GetFeature",
+                typeName    : typeName,
+                resultType  : "results",
+                outputFormat: outputFormat,
+                filter      : URLEncoder.encode(filter, Charset.defaultCharset().displayName()),
+                maxFeatures : maxFeatures,
+                startIndex  : 0
+        ]
+
+        String wfsParamsString = urlParamsToString(wfsParams)
+        String wfsUrlString = "${wfsServer}/getFeature?${wfsParamsString}"
+
+        println "WFSCall URL: ${wfsUrlString}"
+        URL wfsText = new URL(wfsUrlString)
+
+        text = wfsText.text
+        result = outputFormat == "JSON" ? new JsonSlurper().parseText(text) : text
+    }
+    
     void getFeaturePost(String wfsServer, String postString)
     {
         HttpClient httpClient = new DefaultHttpClient()
