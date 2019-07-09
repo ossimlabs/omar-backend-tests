@@ -53,7 +53,7 @@ class WFSCall
         }
     }
 */
-    WFSCall(String wfsServer, String filter, String outputFormat, int maxFeatures, String typeName='omar:raster_entry')
+    WFSCall(String wfsServer)
     {
         HashMap wfsParams = [
                 service     : "WFS",
