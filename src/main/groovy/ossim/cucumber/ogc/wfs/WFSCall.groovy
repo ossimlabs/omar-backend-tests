@@ -53,7 +53,7 @@ class WFSCall
         }
     }
 */
-    WFSCall(wfsServer, outputFormat)
+    WFSCall(wfsServer, filter, outputFormat, maxFeatures, typeName='omar:raster_entry')
     {
         HashMap wfsParams = [
                 service     : "WFS",
