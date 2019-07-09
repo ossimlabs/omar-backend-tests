@@ -53,7 +53,7 @@ class WFSCall
         }
     }
 */
-    WFSCall(String wfsServer)
+    WFSCall(wfsServer, outputFormat)
     {
         HashMap wfsParams = [
                 service     : "WFS",
