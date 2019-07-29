@@ -47,7 +47,7 @@ class WCSCall
         def coverageEncoded = encode(coverage)
         def filterEncoded = encode(filter)
         def bboxEncoded = encode(bbox)
-        def wcsUrl = "${wcsServer}/getCoverage?service=WCS&version=${version}&request=GetCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}&crs=epsg%3A4326&bbox=${bboxEncoded}&width=1024&height=512&format=GeoTIFF"
+        def wcsUrl = "${wcsServer}/getCoverage?service=WCS&version=${version}&request=GetCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}&crs=epsg%3A4326&bbox=${bboxEncoded}&width=1024&height=512&format=image/tiff"
         println "wcsUrl: ${wcsUrl}"
         return new URL(wcsUrl)
     }
@@ -56,7 +56,7 @@ class WCSCall
     {
         def coverageEncoded = encode(coverage)
         def filterEncoded = encode(filter)
-        def wcsUrl = "${wcsServer}/getCoverage?service=WCS&version=${version}&request=GetCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}&crs=epsg%3A4326&bbox=1,1,1,1&width=1024&height=512&format=GeoTIFF"
+        def wcsUrl = "${wcsServer}/getCoverage?service=WCS&version=${version}&request=GetCoverage&coverage=${coverageEncoded}&filter=${filterEncoded}&crs=epsg%3A4326&bbox=1,1,1,1&width=1024&height=512&format=image/tiff"
         return new URL(wcsUrl)
     }
 
