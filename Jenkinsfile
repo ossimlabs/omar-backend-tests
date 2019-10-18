@@ -26,10 +26,6 @@ node("${BUILD_NODE}") {
                 projectName: o2ArtifactProject,
                 filter: "common-variables.groovy",
                 flatten: true])
-            step ([$class: "CopyArtifact",
-                projectName: o2ArtifactProject,
-                filter: "cucumber-configs/cucumber-config-backend.groovy",
-                flatten: true])
         }
 
         load "common-variables.groovy"
@@ -39,7 +35,6 @@ node("${BUILD_NODE}") {
         stage("Run Test"){
             sh """
                 echo "TARGET_DEPLOYMENT = ${TARGET_DEPLOYMENT}"
-                export CUCUMBER_CONFIG_LOCATION="cucumber-config-backend.groovy"
                 export DISPLAY=":1"
                 gradle backend
             """
