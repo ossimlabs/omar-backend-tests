@@ -30,7 +30,7 @@ String getImageId(String index = "a", String format, String platform, String sen
 }
 
 Given(~/^that the download service is running$/) { ->
-    def healthText = new URL("${downloadService}/health").text
+    def healthText = new URL("${downloadService}/actuator/health").text
     def healthJson = new JsonSlurper().parseText(healthText)
     assert healthJson.status == "UP"
 }
